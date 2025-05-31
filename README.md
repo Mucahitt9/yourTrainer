@@ -1,5 +1,101 @@
-# 💪 YourTrainer - Personal Trainer Üye Kayıt Sistemi
+# 💪 YourTrainer – PT Üye Kayıt Sistemi
 
-Modern ve kullanıcı dostu Personal Trainer üye kayıt sistemi. React + Vite + TailwindCSS ile geliştirilmiştir.
+Bu proje, kişisel antrenörlerin üyelerini kolayca yönetebilmesi için hazırlanmış basit ama işlevsel bir sistemdir. React, Vite ve TailwindCSS kullanılarak geliştirildi.
 
-![PT Üye Kayıt Sistemi](https://img.shields.io/badge/React-18.x-blue?style=for-the-badge&logo=react)\n![Vite](https://img.shields.io/badge/Vite-5.x-646CFF?style=for-the-badge&logo=vite)\n![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.x-38B2AC?style=for-the-badge&logo=tailwind-css)\n\n## 🚀 Özellikler\n\n### 🔐 Giriş Sistemi\n- Güvenli PT girişi\n- Otomatik yönlendirme\n- Responsive tasarım\n\n### 👥 Üye Yönetimi\n- **3 Adımlı Üye Kayıt:**\n  1. **Temel Bilgiler:** Ad, soyad, ders sayısı, haftalık program\n  2. **Vücut Ölçüleri:** Boy, kilo, vücut ölçüleri\n  3. **Önizleme:** Bilgi kontrolü ve kayıt tamamlama\n\n- **Akıllı Hesaplamalar:**\n  - Otomatik toplam ücret hesaplama\n  - Tahmini ders bitiş tarihi hesaplama\n  - Haftalık ders programına göre takip\n\n### 📊 Üye Listesi\n- Tüm üyeleri görüntüleme\n- Üye detay sayfaları\n- Düzenleme ve güncelleme\n- Arama ve filtreleme\n\n### 👤 PT Profil Yönetimi\n- Profil bilgilerini görüntüleme/düzenleme\n- Profil resmi yükleme\n- Ders başına ücret ayarlama\n- Uzmanlık alanı tanımlama\n\n### 🔔 Gelişmiş Toast Bildirim Sistemi\n- **4 Farklı Tür:** Success, Error, Warning, Info\n- **Progress Bar:** Kalan süreyi gösterir\n- **Mobile Responsive:** Tüm cihazlarda mükemmel\n- **Smart Stacking:** Çoklu bildirim yönetimi\n- **Accessibility:** Screen reader desteği\n- **Özel Türler:** Persistent ve Loading toast'lar\n\n## 🛠️ Teknoloji Stack\n\n- **Frontend:** React 18.x\n- **Build Tool:** Vite 5.x\n- **Styling:** TailwindCSS 3.x\n- **Icons:** Lucide React\n- **Routing:** React Router DOM\n- **State Management:** React Context API\n- **Data Storage:** LocalStorage (geliştirme aşaması)\n\n## 📦 Kurulum\n\n### Gereksinimler\n- Node.js 16+ \n- npm veya yarn\n\n### Adımlar\n\n1. **Projeyi klonlayın:**\n```bash\ngit clone https://github.com/Mucahitt9/yourTrainer.git\ncd yourTrainer\n```\n\n2. **Bağımlılıkları yükleyin:**\n```bash\nnpm install\n# veya\nyarn install\n```\n\n3. **Geliştirme sunucusunu başlatın:**\n```bash\nnpm run dev\n# veya\nyarn dev\n```\n\n4. **Tarayıcıda açın:**\n```\nhttp://localhost:5173\n```\n\n## 🎯 Kullanım\n\n### Giriş Yapma\nDemo hesap bilgileri:\n- **Kullanıcı Adı:** admin\n- **Şifre:** admin123\n\n### Yeni Üye Ekleme\n1. \"Yeni Üye\" sayfasına gidin\n2. 3 adımlı formu doldurun:\n   - Temel bilgiler\n   - Vücut ölçüleri  \n   - Önizleme ve kayıt\n3. Başarı bildirimi ile kayıt tamamlanır\n\n### Toast Sistemi Test Etme\n- Navbar'dan \"Toast Demo\" sayfasına gidin\n- Tüm toast türlerini test edin\n- Mobile responsive özelliklerini kontrol edin\n\n## 📱 Responsive Tasarım\n\n- **Mobile First:** Mobil cihazlar öncelikli tasarım\n- **Tablet Uyumlu:** iPad ve benzeri cihazlar\n- **Desktop Optimize:** Büyük ekranlar için optimize\n\n## 🎨 Tasarım Sistemi\n\n### Renkler\n- **Primary:** Indigo/Blue tones\n- **Success:** Green\n- **Error:** Red\n- **Warning:** Yellow\n- **Info:** Blue\n\n### Tipografi\n- **Font Family:** Inter (Google Fonts)\n- **Responsive:** Mobil ve desktop için optimize boyutlar\n\n## 📋 Proje Yapısı\n\n```\nsrc/\n├── components/          # Yeniden kullanılabilir bileşenler\n│   ├── client-form/    # Üye kayıt form bileşenleri\n│   ├── Layout.jsx      # Ana sayfa düzeni\n│   ├── Navbar.jsx      # Navigasyon çubuğu\n│   └── SuccessModal.jsx # Başarı modal'ı\n├── pages/              # Sayfa bileşenleri\n│   ├── ClientsPage.jsx     # Yeni üye kayıt\n│   ├── ClientListPage.jsx  # Üye listesi\n│   ├── ClientDetailPage.jsx # Üye detay\n│   ├── ClientEditPage.jsx   # Üye düzenleme\n│   ├── ProfilePage.jsx      # PT profil\n│   ├── LoginPage.jsx        # Giriş sayfası\n│   └── ToastDemoPage.jsx    # Toast demo\n├── utils/              # Yardımcı fonksiyonlar\n│   ├── AuthContext.jsx     # Kimlik doğrulama\n│   ├── ToastContext.jsx    # Toast yönetimi\n│   └── helpers.js          # Genel yardımcılar\n└── styles/             # Stil dosyaları\n    └── globals.css     # Global CSS ve animasyonlar\n```\n\n## 🔄 Güncellemeler\n\n### v1.0.0 (2024)\n- ✅ Temel üye kayıt sistemi\n- ✅ PT profil yönetimi\n- ✅ Responsive tasarım\n- ✅ Gelişmiş toast sistemi\n- ✅ Mobile optimizasyon\n- ✅ Accessibility desteği\n\n### Gelecek Özellikler\n- 📅 Ders takvimi entegrasyonu\n- 💳 Ödeme takip sistemi  \n- 📊 Analitik dashboard\n- 🔔 Push notification\n- 🗄️ Gerçek veritabanı entegrasyonu\n\n## 🤝 Katkıda Bulunma\n\n1. Projeyi fork edin\n2. Feature branch oluşturun (`git checkout -b feature/amazing-feature`)\n3. Değişikliklerinizi commit edin (`git commit -m 'feat: add amazing feature'`)\n4. Branch'i push edin (`git push origin feature/amazing-feature`)\n5. Pull Request açın\n\n## 📄 Lisans\n\nBu proje MIT lisansı ile lisanslanmıştır. Detaylar için `LICENSE` dosyasına bakın.\n\n## 👨‍💻 Geliştirici\n\n**Mucahit** - [@Mucahitt9](https://github.com/Mucahitt9)\n\n## 🙏 Teşekkürler\n\n- [React](https://reactjs.org/) - UI kütüphanesi\n- [Vite](https://vitejs.dev/) - Build tool\n- [TailwindCSS](https://tailwindcss.com/) - CSS framework\n- [Lucide React](https://lucide.dev/) - Icon kütüphanesi\n\n---\n\n⭐ Bu proje faydalı olduysa yıldız vermeyi unutmayın!\n
+## Özellikler
+
+### Giriş Sistemi
+- PT giriş ekranı (şimdilik basit bir login)
+- Oturum sonrası yönlendirme
+- Tüm cihazlarda uyumlu görünüm
+
+### Üye Kayıt Süreci
+Üye kayıt ekranı 3 adımdan oluşur:
+1. **Temel Bilgiler:** Ad-soyad, ders sayısı, ders ücreti gibi alanlar
+2. **Vücut Ölçüleri:** Boy, kilo, kol, omuz vs.
+3. **Önizleme:** Girilen tüm bilgiler özetlenir ve onaylanır
+
+> Kayıt sırasında otomatik olarak toplam ücret ve tahmini bitiş tarihi hesaplanır.
+
+### Üye Listesi
+- Kayıtlı üyeleri tablo halinde gösterir
+- Detay sayfası ile üyeye ait bilgileri görüntüleyebilirsin
+- Üye bilgilerini düzenleyebilir, silebilirsin
+- Arama ve filtreleme desteği var
+
+### PT Profil Sayfası
+- Antrenör bilgilerini güncelleyebilir
+- Profil fotoğrafı eklenebilir
+- Ders ücreti ve uzmanlık alanı tanımlanabilir
+
+### Bildirim Sistemi (Toast)
+- Başarı, hata, bilgi, uyarı gibi 4 farklı türde toast mesajı
+- Zaman çubuğu, üst üste bildirimler, mobil uyum ve erişilebilirlik desteği
+
+## Kullanılan Teknolojiler
+- React 18
+- Vite 5
+- TailwindCSS 3
+- React Router
+- Context API
+- Lucide Icons
+- LocalStorage (şimdilik backend yok)
+
+## Kurulum
+
+> Aşağıdaki adımları takip ederek projeyi çalıştırabilirsin:
+
+```bash
+**git clone https://github.com/Mucahitt9/yourTrainer.git
+cd yourTrainer
+npm install
+npm run dev
+Demo Hesap
+Test için kullanabileceğin bir demo hesap var:
+
+Kullanıcı adı: admin
+
+Şifre: admin123
+
+Tasarım Notları
+Mobil öncelikli (responsive)
+
+Inter fontu kullanıldı (Google Fonts)
+
+Renkler: Indigo/Mavi ağırlıklı, success-green, error-red, info-blue, warning-yellow
+
+Klasör Yapısı (Özet)
+cpp
+Kopyala
+Düzenle
+src/
+├── components/          // Ortak bileşenler
+│   ├── client-form/     // Üye kayıt adımları
+│   └── Navbar, Layout, Modals
+├── pages/               // Tüm sayfalar (Login, Profil, Üye listesi vs.)
+├── utils/               // Context, helper fonksiyonlar
+└── styles/              // Global CSS
+Planlanan Geliştirmeler
+Takvim entegrasyonu (haftalık ders programı için)
+
+Gerçek veritabanı bağlantısı
+
+Ödeme takibi
+
+Dashboard & analiz ekranları
+
+Bildirim sistemi (push notification)
+
+Katkıda Bulunmak İstersen
+Projeyi fork'la, bir branch oluştur, geliştir ve PR aç. Yardımcı olursan süper olur 🙌
+
+Lisans
+MIT
+
+👨‍💻 Geliştirici: @Mucahitt9
+
+Eğer proje işine yaradıysa bir ⭐ bırakman yeterli, moral olur :)
+
+yaml
+Kopyala
+Düzenle
