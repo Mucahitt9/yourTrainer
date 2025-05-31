@@ -95,12 +95,19 @@
 - [x] 🎭 Animasyonlar ✅ 
 - [x] 📱 PWA Özellikleri ✅
 
-### 🔄 Sonraki Özellikler (v1.4)
+### ✅ v1.4.0 ÖZELİKLERİ (TAMAMLANDI!)
+- [x] 📸 Profil Fotoğrafı Yükleme ✅
+- [x] ⚡ Performance İyileştirmeleri ✅
+- [x] 🎨 PWA Icon Optimizasyonu ✅
+- [x] 🚀 Lazy Loading & Code Splitting ✅
+- [x] 📊 Memory Optimization ✅
+
+### 🔄 Sonraki Özellikler (v1.5)
+- [ ] Form dirty state kontrolü
 - [ ] Ders takip sistemi
 - [ ] Gelişmiş istatistikler ve grafikler
 - [ ] Müşteri arama geçmişi
 - [ ] Çoklu müşteri seçimi ve işlemler
-- [ ] PWA iconlarını optimize et
 
 ---
 
@@ -135,15 +142,21 @@
 ---
 
 ## 🎯 GÜNCEL DURUM
-**v1.3.0 TAMAMLANDI! 🎉**
+**v1.4.0 TAMAMLANDI! 🔥**
 
-Yeni eklenen özellikler (v1.3.0):
+Yeni eklenen özellikler (v1.4.0):
+- 📸 **Profil Fotoğrafı Yükleme** - Drag & drop, auto-resize, format optimization
+- ⚡ **Performance İyileştirmeleri** - Lazy loading, code splitting, memory optimization
+- 🎨 **PWA Icon Optimizasyonu** - Yeni logo tasarimi ve optimized icons
+- 🚀 **Advanced Caching** - Optimized service worker ve cache strategies
+- 📊 **Memory Monitoring** - Development mode'da memory usage tracking
+- 🔧 **Performance Utils** - Image optimization, debounce, throttle utilities
+
+Önceki özellikler (v1.3.0):
 - 🏠 **Dashboard Anasayfa** - İstatistikler, hızlı işlemler, yakında biten dersler
 - 🎭 **Animasyonlar** - Hover efektleri, card animasyonları, staggered loading
 - 📱 **PWA Özellikleri** - Offline çalışma, install prompt, service worker
 - ✨ **Modern UX** - Gelişmiş kullanıcı deneyimi ve performans
-
-Önceki özellikler (v1.2.2):
 - ✅ **Mobile Responsive Button Fix** - Tüm butonlar mobilde düzgün çalışıyor
 - ✅ **Header Layout Optimization** - Mobil cihazlarda header düzeni iyileştirildi
 - ✅ **Touch-Friendly Buttons** - Minimum dokunma alanları eklendi
@@ -170,7 +183,7 @@ Yeni eklenen özellikler (v1.3.0):
 - ✅ Toast notification sistemi
 - ✅ Success modal animasyonları
 
-**Sonraki odak**: v1.4 için ders takip sistemi ve form dirty state
+**Sonraki odak**: v1.5 için form dirty state ve ders takip sistemi
 
 ## 📝 NOTLAR
 - Müşteri CRUD işlemleri tamamlandı
@@ -180,6 +193,12 @@ Yeni eklenen özellikler (v1.3.0):
 - Mobile responsive butonlar düzeltildi ✅
 - Touch-friendly minimum buton boyutları eklendi ✅
 - Header layout'lar mobilde optimize edildi ✅
+- **Profil fotoğrafı yükleme sistemi eklendi** ✅
+- **Performance optimizasyonları tamamlandı** ✅
+- **Lazy loading ve code splitting aktif** ✅
+- **Memory monitoring development mode'da aktif** ✅
+- **PWA icon'lar optimized ve yeni logo** ✅
+- **Advanced service worker cache strategies** ✅
 - Responsive tasarım tüm sayfalarda kontrol edildi
 - LocalStorage ile veri persist ediliyor
 - Modern UX patterns uygulandı

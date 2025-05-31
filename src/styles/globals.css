@@ -146,72 +146,96 @@
     animation: slideInRight 0.4s ease-out;
   }
 
-  /* Hover Animation Utilities */
+  /* Hover Animation Utilities - GPU Accelerated */
   .hover-lift {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform, box-shadow;
   }
 
   .hover-lift:hover {
-    transform: translateY(-4px);
+    transform: translateY(-4px) translateZ(0);
     box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
   }
 
   .hover-scale {
     transition: transform 0.2s ease-in-out;
+    will-change: transform;
   }
 
   .hover-scale:hover {
-    transform: scale(1.05);
+    transform: scale(1.05) translateZ(0);
   }
 
   .hover-glow {
     transition: all 0.3s ease;
+    will-change: transform, box-shadow;
   }
 
   .hover-glow:hover {
     box-shadow: 0 0 20px rgba(79, 70, 229, 0.4);
-    transform: translateY(-2px);
+    transform: translateY(-2px) translateZ(0);
   }
 
-  /* Card Animation */
+  /* Card Animation - Optimized */
   .card-animate {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform, box-shadow;
+    backface-visibility: hidden;
   }
 
   .card-animate:hover {
-    transform: translateY(-2px);
+    transform: translateY(-2px) translateZ(0);
     box-shadow: 0 8px 25px -5px rgba(0, 0, 0, 0.1), 0 6px 10px -6px rgba(0, 0, 0, 0.1);
   }
 
-  /* Button Pulse Animation */
+  /* Button Pulse Animation - GPU Optimized */
   .btn-pulse {
     animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    will-change: opacity;
   }
 
-  /* Loading Animations */
+  /* Loading Animations - Optimized */
   .animate-bounce-slow {
     animation: bounce 1.5s infinite;
+    will-change: transform;
   }
 
   .animate-pulse-slow {
     animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    will-change: opacity;
   }
 
-  /* Staggered Animation */
+  /* Staggered Animation - GPU Accelerated */
   .animate-stagger-1 {
     animation-delay: 0.1s;
+    transform: translateZ(0);
   }
 
   .animate-stagger-2 {
     animation-delay: 0.2s;
+    transform: translateZ(0);
   }
 
   .animate-stagger-3 {
     animation-delay: 0.3s;
+    transform: translateZ(0);
   }
 
   .animate-stagger-4 {
     animation-delay: 0.4s;
+    transform: translateZ(0);
+  }
+
+  /* Performance optimizations */
+  .gpu-accelerated {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000;
+  }
+
+  .smooth-scroll {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
   }
 }
 
@@ -259,42 +283,44 @@
 @keyframes fadeIn {
   from {
     opacity: 0;
+    transform: translateY(10px) translateZ(0);
   }
   to {
     opacity: 1;
+    transform: translateY(0) translateZ(0);
   }
 }
 
 @keyframes slideUp {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(20px) translateZ(0);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) translateZ(0);
   }
 }
 
 @keyframes slideInLeft {
   from {
     opacity: 0;
-    transform: translateX(-30px);
+    transform: translateX(-30px) translateZ(0);
   }
   to {
     opacity: 1;
-    transform: translateX(0);
+    transform: translateX(0) translateZ(0);
   }
 }
 
 @keyframes slideInRight {
   from {
     opacity: 0;
-    transform: translateX(30px);
+    transform: translateX(30px) translateZ(0);
   }
   to {
     opacity: 1;
-    transform: translateX(0);
+    transform: translateX(0) translateZ(0);
   }
 }
 

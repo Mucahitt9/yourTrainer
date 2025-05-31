@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useAuth } from '../utils/AuthContext';
 import { useToast } from '../utils/ToastContext';
-import { User, Edit3, Save, X, Upload, Camera, MapPin, Award, Calendar, DollarSign } from 'lucide-react';
+import { User, Edit3, Save, X, Camera, MapPin, Award, Calendar, DollarSign } from 'lucide-react';
 import { formatDate, generateUsername } from '../utils/helpers';
+import ProfilePhotoUpload from '../components/ProfilePhotoUpload';
 
 const ProfilePage = () => {
   const { currentPT, updatePTProfile } = useAuth();
@@ -107,15 +108,11 @@ const ProfilePage = () => {
     setIsEditing(false);
   };
 
-  const handleProfilResmiDegistir = () => {
-    // Basit bir prompt ile URL alma (gerçek uygulamada file upload olacak)
-    const yeniURL = prompt('Profil resmi URL\'sini girin:', editData.profil_resmi_url);
-    if (yeniURL !== null) {
-      setEditData(prev => ({
-        ...prev,
-        profil_resmi_url: yeniURL
-      }));
-    }
+  const handlePhotoChange = (photoDataUrl) => {
+    setEditData(prev => ({
+      ...prev,
+      profil_resmi_url: photoDataUrl || ''
+    }));
   };
 
   return (
@@ -176,32 +173,14 @@ const ProfilePage = () => {
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
             {/* Profil Resmi */}
             <div className="relative bg-gradient-to-br from-primary-500 to-primary-600 p-6 text-center">
-              <div className="relative inline-block">
-                <div className="w-24 h-24 mx-auto rounded-full bg-white p-1">
-                  {currentPT?.profil_resmi_url || editData.profil_resmi_url ? (
-                    <img
-                      src={isEditing ? editData.profil_resmi_url : currentPT?.profil_resmi_url}
-                      alt="Profil"
-                      className="w-full h-full rounded-full object-cover"
-                      onError={(e) => {
-                        e.target.style.display = 'none';
-                        e.target.nextSibling.style.display = 'flex';
-                      }}
-                    />
-                  ) : null}
-                  <div className="w-full h-full rounded-full bg-gray-200 flex items-center justify-center">
-                    <User className="h-12 w-12 text-gray-400" />
-                  </div>
-                </div>
-                
-                {isEditing && (
-                  <button
-                    onClick={handleProfilResmiDegistir}
-                    className="absolute -bottom-1 -right-1 bg-primary-600 text-white p-2 rounded-full hover:bg-primary-700 transition-colors duration-200"
-                  >
-                    <Camera className="h-4 w-4" />
-                  </button>
-                )}
+              {/* Profil Fotoğrafı Upload */}
+              <div className="mb-4">
+                <ProfilePhotoUpload
+                  currentPhoto={isEditing ? editData.profil_resmi_url : currentPT?.profil_resmi_url}
+                  onPhotoChange={handlePhotoChange}
+                  disabled={!isEditing}
+                  theme="profile"
+                />
               </div>
               
               <h2 className="mt-4 text-xl font-bold text-white">

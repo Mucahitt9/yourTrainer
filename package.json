@@ -1,13 +1,16 @@
 {
   "name": "yourtrainer-pt-system",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Personal Trainer Üye Kayıt Sistemi",
   "main": "index.js",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0"
+    "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "analyze": "vite build --mode analyze",
+    "build:prod": "vite build --mode production && npm run analyze-bundle",
+    "analyze-bundle": "npx vite-bundle-analyzer dist"
   },
   "keywords": ["personal-trainer", "client-management", "fitness"],
   "author": "YourTrainer Team",

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../utils/AuthContext';
 import { getFromLocalStorage } from '../utils/helpers';
@@ -29,58 +29,62 @@ const DashboardPage = () => {
     upcomingEnds: []
   });
 
-  useEffect(() => {
-    const calculateStats = () => {
-      const musteriler = getFromLocalStorage('musteriler', []);
-      const now = new Date();
-      const thisMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-      
-      // Temel istatistikler
-      const totalClients = musteriler.length;
-      const activeClients = musteriler.filter(m => {
-        if (!m.tahmini_bitis_tarihi) return true;
-        return new Date(m.tahmini_bitis_tarihi) > now;
-      }).length;
-      const completedClients = totalClients - activeClients;
-      
-      // Gelir hesaplamaları
-      const totalRevenue = musteriler.reduce((sum, m) => sum + (m.toplam_ucret || 0), 0);
-      const thisMonthClients = musteriler.filter(m => 
-        new Date(m.kayit_tarihi) >= thisMonth
-      );
-      const thisMonthRevenue = thisMonthClients.reduce((sum, m) => sum + (m.toplam_ucret || 0), 0);
-      
-      // Ortalama ders fiyatı
-      const averageSessionPrice = totalClients > 0 
-        ? musteriler.reduce((sum, m) => sum + (m.ders_basina_ucret || 0), 0) / totalClients 
-        : 0;
-      
-      // Yaklaşan bitiş tarihleri (30 gün içinde)
-      const thirtyDaysLater = new Date();
-      thirtyDaysLater.setDate(now.getDate() + 30);
-      
-      const upcomingEnds = musteriler
-        .filter(m => {
-          if (!m.tahmini_bitis_tarihi) return false;
-          const endDate = new Date(m.tahmini_bitis_tarihi);
-          return endDate > now && endDate <= thirtyDaysLater;
-        })
-        .sort((a, b) => new Date(a.tahmini_bitis_tarihi) - new Date(b.tahmini_bitis_tarihi))
-        .slice(0, 5);
-
-      setStats({
-        totalClients,
-        activeClients,
-        completedClients,
-        totalRevenue,
-        thisMonthRevenue,
-        averageSessionPrice,
-        upcomingEnds
-      });
-    };
-
-    calculateStats();
+  // Memoized hesaplamalar
+  const musteriler = useMemo(() => {
+    return getFromLocalStorage('musteriler', []);
   }, []);
+
+  const calculatedStats = useMemo(() => {
+    const now = new Date();
+    const thisMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+    
+    // Temel istatistikler
+    const totalClients = musteriler.length;
+    const activeClients = musteriler.filter(m => {
+      if (!m.tahmini_bitis_tarihi) return true;
+      return new Date(m.tahmini_bitis_tarihi) > now;
+    }).length;
+    const completedClients = totalClients - activeClients;
+    
+    // Gelir hesaplamaları
+    const totalRevenue = musteriler.reduce((sum, m) => sum + (m.toplam_ucret || 0), 0);
+    const thisMonthClients = musteriler.filter(m => 
+      new Date(m.kayit_tarihi) >= thisMonth
+    );
+    const thisMonthRevenue = thisMonthClients.reduce((sum, m) => sum + (m.toplam_ucret || 0), 0);
+    
+    // Ortalama ders fiyatı
+    const averageSessionPrice = totalClients > 0 
+      ? musteriler.reduce((sum, m) => sum + (m.ders_basina_ucret || 0), 0) / totalClients 
+      : 0;
+    
+    // Yaklaşan bitiş tarihleri (30 gün içinde)
+    const thirtyDaysLater = new Date();
+    thirtyDaysLater.setDate(now.getDate() + 30);
+    
+    const upcomingEnds = musteriler
+      .filter(m => {
+        if (!m.tahmini_bitis_tarihi) return false;
+        const endDate = new Date(m.tahmini_bitis_tarihi);
+        return endDate > now && endDate <= thirtyDaysLater;
+      })
+      .sort((a, b) => new Date(a.tahmini_bitis_tarihi) - new Date(b.tahmini_bitis_tarihi))
+      .slice(0, 5);
+
+    return {
+      totalClients,
+      activeClients,
+      completedClients,
+      totalRevenue,
+      thisMonthRevenue,
+      averageSessionPrice,
+      upcomingEnds
+    };
+  }, [musteriler]);
+
+  useEffect(() => {
+    setStats(calculatedStats);
+  }, [calculatedStats]);
 
   const quickActions = [
     {
@@ -112,29 +116,29 @@ const DashboardPage = () => {
     }
   ];
 
-  const formatCurrency = (amount) => {
+  const formatCurrency = useCallback((amount) => {
     return new Intl.NumberFormat('tr-TR', {
       style: 'currency',
       currency: 'TRY',
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(amount);
-  };
+  }, []);
 
-  const formatDate = (dateString) => {
+  const formatDate = useCallback((dateString) => {
     return new Date(dateString).toLocaleDateString('tr-TR', {
       day: 'numeric',
       month: 'short'
     });
-  };
+  }, []);
 
-  const getDaysUntil = (dateString) => {
+  const getDaysUntil = useCallback((dateString) => {
     const targetDate = new Date(dateString);
     const today = new Date();
     const diffTime = targetDate - today;
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     return diffDays;
-  };
+  }, []);
 
   return (
     <div className="max-w-7xl mx-auto space-y-8">
