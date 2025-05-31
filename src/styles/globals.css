@@ -1,0 +1,166 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom base styles */
+@layer base {
+  body {
+    @apply font-sans antialiased bg-gray-50 text-gray-900;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Custom component styles */
+@layer components {
+  .btn-primary {
+    @apply bg-primary-600 hover:bg-primary-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2;
+  }
+  
+  .btn-secondary {
+    @apply bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2;
+  }
+  
+  .input-field {
+    @apply w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors duration-200;
+  }
+  
+  .card {
+    @apply bg-white rounded-xl shadow-sm border border-gray-200 p-6;
+  }
+
+  /* Toast specific styles */
+  .toast-container {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 10000;
+    pointer-events: none;
+    width: 100%;
+    max-width: 320px;
+    max-height: calc(100vh - 2rem);
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  /* Mobile first approach */
+  @media (max-width: 640px) {
+    .toast-container {
+      left: 1rem;
+      right: 1rem;
+      max-width: none;
+      width: calc(100vw - 2rem);
+    }
+  }
+
+  /* Tablet and larger */
+  @media (min-width: 641px) {
+    .toast-container {
+      max-width: 384px;
+    }
+  }
+
+  .toast-item {
+    pointer-events: auto;
+    backdrop-filter: blur(8px);
+    transform-origin: top right;
+  }
+
+  /* Custom scrollbar for toast container */
+  .toast-container::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .toast-container::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .toast-container::-webkit-scrollbar-thumb {
+    background-color: rgba(156, 163, 175, 0.5);
+    border-radius: 2px;
+  }
+
+  .toast-container::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(156, 163, 175, 0.7);
+  }
+}
+
+/* Custom utilities */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Z-index utilities */
+  .z-toast {
+    z-index: 10000;
+  }
+
+  .z-toast-overlay {
+    z-index: 9999;
+  }
+
+  /* Animation utilities */
+  .animate-toast-in {
+    animation: toast-slide-in 0.3s ease-out forwards;
+  }
+
+  .animate-toast-out {
+    animation: toast-slide-out 0.3s ease-in forwards;
+  }
+}
+
+/* Toast animations */
+@keyframes toast-slide-in {
+  from {
+    transform: translateX(100%) scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes toast-slide-out {
+  from {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%) scale(0.95);
+    opacity: 0;
+  }
+}
+
+@keyframes toast-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+@keyframes toast-bounce {
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-5px); }
+  60% { transform: translateY(-3px); }
+}
+
+@keyframes progress-countdown {
+  from { width: 100%; }
+  to { width: 0%; }
+}
+
+/* Utility classes for special animations */
+.animate-toast-shake {
+  animation: toast-shake 0.5s ease-in-out;
+}
+
+.animate-toast-bounce {
+  animation: toast-bounce 0.6s ease-in-out;
+}
+
+.animate-progress-countdown {
+  animation: progress-countdown linear;
+}
