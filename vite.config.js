@@ -5,7 +5,8 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   server: {
-    port: 3000,
-    open: true
+    host: '192.168.1.132', // 👈 Bilgisayar IP'sinden erişim için bu şart
+    port: 1997,       // 👈 Port numarası (telefon tarayıcısında da bu port kullanılacak)
+    open: true        // Projeyi otomatik açar
   }
 })

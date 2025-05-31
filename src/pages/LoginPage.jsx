@@ -157,9 +157,16 @@ const LoginPage = () => {
         </div>
 
         {/* Footer */}
-        <p className="text-center text-xs text-gray-500">
-          Created by CONSOLE.TECNOLOGY | 2025
-        </p>
+        <div className="logo-font text-xl text-white bg-black flex items-center justify-center gap-2 py-4 mt-8 rounded-lg">
+  <span className="text-purple-500 text-2xl">{'{'}</span>
+  <span className="font-bold">CONSOLE</span>
+  <div className="w-4 h-4 bg-purple-600 rounded-full"></div>
+  <span className="font-bold">TECH</span>
+  <span className="text-purple-500 text-2xl">{'}'}</span>
+</div>
+        <div className="text-center text-sm text-gray-500 mt-4">
+          &copy; {new Date().getFullYear()} YourTrainer. Tüm hakları saklıdır.
+        </div>
       </div>
     </div>
   );
