@@ -235,47 +235,47 @@ const ClientEditPage = () => {
     <div className="max-w-4xl mx-auto">
       {/* Header */}
       <div className="mb-8">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <Link
-              to={`/clients/${id}`}
-              className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors duration-200"
-            >
-              <ArrowLeft className="h-5 w-5" />
-            </Link>
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">Müşteri Düzenle</h1>
-              <p className="text-gray-600">{formData.ad} {formData.soyad} - Bilgileri Güncelle</p>
-            </div>
+        {/* Mobil: İlk satır - Geri buton ve başlık */}
+        <div className="flex items-center space-x-4 mb-4">
+          <Link
+            to={`/clients/${id}`}
+            className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors duration-200 flex-shrink-0"
+          >
+            <ArrowLeft className="h-5 w-5" />
+          </Link>
+          <div className="min-w-0 flex-1">
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Müşteri Düzenle</h1>
+            <p className="text-sm sm:text-base text-gray-600 truncate">{formData.ad} {formData.soyad} - Bilgileri Güncelle</p>
           </div>
+        </div>
+        
+        {/* Mobil: İkinci satır - Action Buttons */}
+        <div className="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-3 sm:justify-end">
+          <Link
+            to={`/clients/${id}`}
+            className="inline-flex items-center justify-center px-4 py-2 bg-gray-200 text-gray-800 text-sm font-medium rounded-lg hover:bg-gray-300 transition-colors duration-200 min-w-0"
+          >
+            <X className="h-4 w-4 mr-2 flex-shrink-0" />
+            <span className="truncate">İptal</span>
+          </Link>
           
-          <div className="flex items-center space-x-3">
-            <Link
-              to={`/clients/${id}`}
-              className="inline-flex items-center px-4 py-2 bg-gray-200 text-gray-800 text-sm font-medium rounded-lg hover:bg-gray-300 transition-colors duration-200"
-            >
-              <X className="h-4 w-4 mr-2" />
-              İptal
-            </Link>
-            
-            <button
-              onClick={handleSave}
-              disabled={saving}
-              className="inline-flex items-center px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 disabled:opacity-50 transition-colors duration-200"
-            >
-              {saving ? (
-                <>
-                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
-                  Kaydediliyor...
-                </>
-              ) : (
-                <>
-                  <Save className="h-4 w-4 mr-2" />
-                  Değişiklikleri Kaydet
-                </>
-              )}
-            </button>
-          </div>
+          <button
+            onClick={handleSave}
+            disabled={saving}
+            className="inline-flex items-center justify-center px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 disabled:opacity-50 transition-colors duration-200 min-w-0"
+          >
+            {saving ? (
+              <>
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2 flex-shrink-0" />
+                <span className="truncate">Kaydediliyor...</span>
+              </>
+            ) : (
+              <>
+                <Save className="h-4 w-4 mr-2 flex-shrink-0" />
+                <span className="truncate">Kaydet</span>
+              </>
+            )}
+          </button>
         </div>
       </div>
 

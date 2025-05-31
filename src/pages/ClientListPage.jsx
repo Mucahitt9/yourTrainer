@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Users, Search, Plus, UserPlus, Calendar, DollarSign, Phone, Mail, Eye, Edit, Trash2, Filter } from 'lucide-react';
 import { getFromLocalStorage, formatDate } from '../utils/helpers';
 import { useToast } from '../utils/ToastContext';
+import DeleteConfirmModal from '../components/DeleteConfirmModal';
 
 const ClientListPage = () => {
   const [musteriler, setMusteriler] = useState([]);
@@ -10,6 +11,9 @@ const ClientListPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all'); // 'all', 'active', 'completed'
   const [loading, setLoading] = useState(true);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [selectedMusteri, setSelectedMusteri] = useState(null);
   const { toast } = useToast();
 
   // Müşterileri yükle
@@ -61,17 +65,45 @@ const ClientListPage = () => {
     setFilteredMusteriler(filtered);
   }, [searchTerm, statusFilter, musteriler]);
 
-  const handleDelete = (musteriId) => {
-    if (window.confirm('Bu müşteriyi silmek istediğinizden emin misiniz?')) {
-      try {
-        const yeniListe = musteriler.filter(m => m.id !== musteriId);
-        setMusteriler(yeniListe);
-        localStorage.setItem('musteriler', JSON.stringify(yeniListe));
-        toast.success('Müşteri başarıyla silindi');
-      } catch (error) {
-        toast.error('Müşteri silinirken hata oluştu');
-      }
+  const handleDeleteClick = (musteri) => {
+    setSelectedMusteri(musteri);
+    setShowDeleteModal(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!selectedMusteri) return;
+    
+    setDeleteLoading(true);
+    
+    try {
+      // Kısa bir delay ekleyelim (gerçek API'da olacağı gibi)
+      await new Promise(resolve => setTimeout(resolve, 800));
+      
+      const yeniListe = musteriler.filter(m => m.id !== selectedMusteri.id);
+      setMusteriler(yeniListe);
+      localStorage.setItem('musteriler', JSON.stringify(yeniListe));
+      
+      toast.success(`${selectedMusteri.ad} ${selectedMusteri.soyad} adlı müşteri başarıyla silindi.`, {
+        title: 'Müşteri Silindi!',
+        duration: 4000
+      });
+      
+      // Modal'ı kapat
+      setShowDeleteModal(false);
+      setSelectedMusteri(null);
+    } catch (error) {
+      toast.error('Müşteri silinirken beklenmeyen bir hata oluştu. Lütfen tekrar deneyin.', {
+        title: 'Silme Hatası!',
+        duration: 5000
+      });
+    } finally {
+      setDeleteLoading(false);
     }
+  };
+
+  const handleDeleteCancel = () => {
+    setShowDeleteModal(false);
+    setSelectedMusteri(null);
   };
 
   const getStatusBadge = (musteri) => {
@@ -120,12 +152,12 @@ const ClientListPage = () => {
     <div className="max-w-7xl mx-auto">
       {/* Sayfa Başlığı */}
       <div className="mb-8">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between">
-          <div className="flex items-center space-x-3 mb-4 md:mb-0">
-            <Users className="h-8 w-8 text-primary-600" />
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">Müşteri Listesi</h1>
-              <p className="text-gray-600">
+        <div className="flex flex-col space-y-4 md:flex-row md:items-center md:justify-between md:space-y-0">
+          <div className="flex items-center space-x-3">
+            <Users className="h-8 w-8 text-primary-600 flex-shrink-0" />
+            <div className="min-w-0">
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Müşteri Listesi</h1>
+              <p className="text-sm sm:text-base text-gray-600">
                 Toplam {musteriler.length} müşteri • {filteredMusteriler.length} görüntüleniyor
               </p>
             </div>
@@ -133,10 +165,10 @@ const ClientListPage = () => {
           
           <Link
             to="/clients/new"
-            className="inline-flex items-center px-4 py-2 bg-primary-600 text-white text-sm font-medium rounded-lg hover:bg-primary-700 transition-colors duration-200"
+            className="inline-flex items-center justify-center px-4 py-2 bg-primary-600 text-white text-sm font-medium rounded-lg hover:bg-primary-700 transition-colors duration-200 flex-shrink-0"
           >
             <UserPlus className="h-4 w-4 mr-2" />
-            Yeni Müşteri Ekle
+            <span className="whitespace-nowrap">Yeni Müşteri Ekle</span>
           </Link>
         </div>
       </div>
@@ -232,27 +264,27 @@ const ClientListPage = () => {
                   </div>
                   
                   {/* Aksiyonlar */}
-                  <div className="flex items-center space-x-1">
+                  <div className="flex items-center space-x-1 ml-2">
                     <Link
                       to={`/clients/${musteri.id}`}
-                      className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors duration-200"
+                      className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors duration-200 touch-manipulation"
                       title="Detayları Görüntüle"
                     >
-                      <Eye className="h-4 w-4" />
+                      <Eye className="h-4 w-4 flex-shrink-0" />
                     </Link>
                     <Link
                       to={`/clients/${musteri.id}/edit`}
-                      className="p-2 text-gray-400 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors duration-200"
+                      className="p-2 text-gray-400 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors duration-200 touch-manipulation"
                       title="Düzenle"
                     >
-                      <Edit className="h-4 w-4" />
+                      <Edit className="h-4 w-4 flex-shrink-0" />
                     </Link>
                     <button
-                      onClick={() => handleDelete(musteri.id)}
-                      className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors duration-200"
+                      onClick={() => handleDeleteClick(musteri)}
+                      className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors duration-200 touch-manipulation"
                       title="Sil"
                     >
-                      <Trash2 className="h-4 w-4" />
+                      <Trash2 className="h-4 w-4 flex-shrink-0" />
                     </button>
                   </div>
                 </div>
@@ -333,6 +365,15 @@ const ClientListPage = () => {
           ))}
         </div>
       )}
+
+      {/* Delete Confirmation Modal */}
+      <DeleteConfirmModal
+        isOpen={showDeleteModal}
+        onClose={handleDeleteCancel}
+        onConfirm={handleDeleteConfirm}
+        customerName={selectedMusteri ? `${selectedMusteri.ad} ${selectedMusteri.soyad}` : ''}
+        loading={deleteLoading}
+      />
     </div>
   );
 };

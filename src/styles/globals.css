@@ -16,11 +16,11 @@
 /* Custom component styles */
 @layer components {
   .btn-primary {
-    @apply bg-primary-600 hover:bg-primary-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2;
+    @apply bg-primary-600 hover:bg-primary-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 min-w-0;
   }
   
   .btn-secondary {
-    @apply bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2;
+    @apply bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 min-w-0;
   }
   
   .input-field {
@@ -29,6 +29,24 @@
   
   .card {
     @apply bg-white rounded-xl shadow-sm border border-gray-200 p-6;
+  }
+
+  /* Mobile-friendly button styles */
+  .btn-mobile {
+    @apply min-h-[44px] min-w-[44px] touch-manipulation;
+  }
+
+  .btn-action {
+    @apply p-2 rounded-lg transition-colors duration-200 touch-manipulation min-h-[40px] min-w-[40px] flex items-center justify-center;
+  }
+
+  .btn-responsive {
+    @apply flex items-center justify-center px-4 py-2 rounded-lg font-medium transition-colors duration-200 min-w-0 touch-manipulation;
+  }
+
+  /* Text truncation utilities */
+  .text-truncate-mobile {
+    @apply truncate sm:whitespace-normal;
   }
 
   /* Toast specific styles */

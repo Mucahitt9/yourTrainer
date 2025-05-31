@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useToast } from '../utils/ToastContext';
+import ErrorTestComponent from '../components/error/ErrorTestComponent';
 import { 
   CheckCircle, 
   AlertCircle, 
@@ -137,9 +138,9 @@ const ToastDemoPage = () => {
     <div className="max-w-4xl mx-auto p-6">
       {/* Sayfa Başlığı */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Toast Bildirim Demo</h1>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">Toast & Error Demo</h1>
         <p className="text-gray-600">
-          Geliştirilmiş toast bildirim sisteminin tüm özelliklerini test edin.
+          Geliştirilmiş toast bildirim sistemi ve error boundary özelliklerini test edin.
         </p>
       </div>
 
@@ -148,11 +149,11 @@ const ToastDemoPage = () => {
         <h3 className="font-semibold text-blue-900 mb-2">🚀 Yeni Özellikler:</h3>
         <ul className="text-sm text-blue-800 space-y-1">
           <li>• <strong>Progress Bar:</strong> Kalan süreyi gösteren ilerleme çubuğu</li>
+          <li>• <strong>Error Boundary:</strong> Uygulama hatalarını güzel şekilde gösterir</li>
+          <li>• <strong>Gelişmiş Silme Onayı:</strong> Güvenli müşteri silme modal'ı</li>
           <li>• <strong>Mobile Responsive:</strong> Tüm cihazlarda mükemmel görünüm</li>
           <li>• <strong>Toast Stacking:</strong> Birden fazla toast için akıllı düzenleme</li>
           <li>• <strong>Accessibility:</strong> Screen reader desteği</li>
-          <li>• <strong>Max Limit:</strong> En fazla 5 toast (eski olanlar otomatik kapanır)</li>
-          <li>• <strong>Persistent & Loading:</strong> Özel toast türleri</li>
         </ul>
       </div>
 
@@ -241,6 +242,15 @@ const ToastDemoPage = () => {
               </button>
             </div>
           </div>
+
+          {/* Error Boundary Test */}
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">Error Boundary Test</h2>
+            <p className="text-gray-600 mb-4">
+              Error Boundary sistemini test etmek için aşağıdaki component'i kullanın.
+            </p>
+            <ErrorTestComponent />
+          </div>
         </div>
 
         {/* Sağ Panel - Açıklamalar */}
@@ -309,6 +319,17 @@ const ToastDemoPage = () => {
             </div>
           </div>
 
+          {/* Error Boundary Bilgisi */}
+          <div className="bg-red-50 rounded-xl border border-red-200 p-6">
+            <h3 className="text-lg font-semibold text-red-900 mb-4">🛡️ Error Boundary</h3>
+            <div className="space-y-2 text-sm text-red-800">
+              <p>• Uygulama hatalarını yakalayıp güzel bir sayfa gösterir</p>
+              <p>• Geliştirme modunda teknik detayları gösterir</p>
+              <p>• "Sayfayı Yenile" ve "Anasayfa" butonları sunar</p>
+              <p>• Kullanıcı deneyimini korur</p>
+            </div>
+          </div>
+
           {/* İstatistikler */}
           <div className="bg-gradient-to-br from-green-50 to-blue-50 rounded-xl border border-green-200 p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">💡 İpuçları</h3>
@@ -317,7 +338,7 @@ const ToastDemoPage = () => {
               <p>• En fazla 5 toast aynı anda gösterilebilir</p>
               <p>• Progress bar otomatik kapanma süresini gösterir</p>
               <p>• Persistent toast'lar manuel kapatılmalıdır</p>
-              <p>• Loading toast'lar duration: 0 ile oluşturulur</p>
+              <p>• Error Boundary tüm uygulamayı korur</p>
             </div>
           </div>
         </div>

@@ -2,6 +2,7 @@ import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './utils/AuthContext';
 import { ToastProvider } from './utils/ToastContext';
+import ErrorBoundary from './components/error/ErrorBoundary';
 import LoginPage from './pages/LoginPage';
 import ClientsPage from './pages/ClientsPage';
 import ClientListPage from './pages/ClientListPage';
@@ -62,11 +63,13 @@ const AppContent = () => {
 
 const App = () => {
   return (
-    <AuthProvider>
-      <ToastProvider>
-        <AppContent />
-      </ToastProvider>
-    </AuthProvider>
+    <ErrorBoundary>
+      <AuthProvider>
+        <ToastProvider>
+          <AppContent />
+        </ToastProvider>
+      </AuthProvider>
+    </ErrorBoundary>
   );
 };
 

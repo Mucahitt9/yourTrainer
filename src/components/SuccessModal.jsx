@@ -102,6 +102,7 @@ const SuccessModal = ({ isOpen, onClose, title, message, duration = 3000 }) => {
           </div>
         </div>
       </div>
+    </div>
   );
 };
 

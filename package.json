@@ -1,6 +1,6 @@
 {
   "name": "yourtrainer-pt-system",
-  "version": "1.0.0",
+  "version": "1.2.2",
   "description": "Personal Trainer Üye Kayıt Sistemi",
   "main": "index.js",
   "scripts": {
