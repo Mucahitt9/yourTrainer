@@ -249,7 +249,7 @@ const ClientListPage = () => {
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
           {filteredMusteriler.map((musteri) => (
-            <div key={musteri.id} className="bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow duration-200">
+            <div key={musteri.id} className="bg-white rounded-xl shadow-sm border border-gray-200 hover-lift card-animate transition-all duration-300">
               {/* Müşteri Kartı Header */}
               <div className="p-6 border-b border-gray-100">
                 <div className="flex items-start justify-between">
@@ -267,21 +267,21 @@ const ClientListPage = () => {
                   <div className="flex items-center space-x-1 ml-2">
                     <Link
                       to={`/clients/${musteri.id}`}
-                      className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors duration-200 touch-manipulation"
+                      className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors duration-200 touch-manipulation hover-scale"
                       title="Detayları Görüntüle"
                     >
                       <Eye className="h-4 w-4 flex-shrink-0" />
                     </Link>
                     <Link
                       to={`/clients/${musteri.id}/edit`}
-                      className="p-2 text-gray-400 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors duration-200 touch-manipulation"
+                      className="p-2 text-gray-400 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors duration-200 touch-manipulation hover-scale"
                       title="Düzenle"
                     >
                       <Edit className="h-4 w-4 flex-shrink-0" />
                     </Link>
                     <button
                       onClick={() => handleDeleteClick(musteri)}
-                      className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors duration-200 touch-manipulation"
+                      className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors duration-200 touch-manipulation hover-scale"
                       title="Sil"
                     >
                       <Trash2 className="h-4 w-4 flex-shrink-0" />

@@ -3,7 +3,9 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './utils/AuthContext';
 import { ToastProvider } from './utils/ToastContext';
 import ErrorBoundary from './components/error/ErrorBoundary';
+import PWAInstallPrompt from './components/PWAInstallPrompt';
 import LoginPage from './pages/LoginPage';
+import DashboardPage from './pages/DashboardPage';
 import ClientsPage from './pages/ClientsPage';
 import ClientListPage from './pages/ClientListPage';
 import ClientDetailPage from './pages/ClientDetailPage';
@@ -29,11 +31,14 @@ const AppContent = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* PWA Install Prompt - sadece login olduktan sonra göster */}
+      {isAuthenticated && <PWAInstallPrompt />}
+      
       <Routes>
         <Route 
           path="/login" 
           element={
-            isAuthenticated ? <Navigate to="/clients/new" replace /> : <LoginPage />
+            isAuthenticated ? <Navigate to="/dashboard" replace /> : <LoginPage />
           } 
         />
         <Route 
@@ -44,7 +49,8 @@ const AppContent = () => {
             </ProtectedRoute>
           }
         >
-          <Route index element={<Navigate to="/clients/new" replace />} />
+          <Route index element={<Navigate to="/dashboard" replace />} />
+          <Route path="dashboard" element={<DashboardPage />} />
           <Route path="clients">
             <Route path="new" element={<ClientsPage />} />
             <Route path="list" element={<ClientListPage />} />

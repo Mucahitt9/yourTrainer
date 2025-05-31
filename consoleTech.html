@@ -348,26 +348,152 @@
 
         /* Responsive adjustments */
         @media (max-width: 768px) {
-            .bracket {
+            /* Hero Section Logo adjustments */
+            .logo-container.scale-150 {
+                transform: scale(1); /* Reset scale on smaller screens to prevent overflow */
+                flex-wrap: wrap; /* Allow logo elements to wrap on smaller screens */
+                justify-content: center; /* Center elements when wrapped */
+            }
+            .logo-container.scale-150 .bracket {
+                font-size: 2.5rem; /* Smaller brackets */
+                margin-top: 0.5rem; /* Add some margin for wrapped elements */
+                margin-bottom: 0.5rem;
+            }
+            .logo-container.scale-150 .logo-text {
+                font-size: 1.8rem; /* Smaller text */
+                white-space: nowrap; /* Prevent text from breaking */
+            }
+            .logo-container.scale-150 .orb {
+                width: 50px; /* Smaller orb */
+                height: 50px;
+                margin-left: 0.5rem; /* Adjust margin for smaller screens */
+                margin-right: 0.5rem;
+            }
+
+            /* General Logo Component (used in cards) */
+            .logo-container .bracket {
                 font-size: 2.5rem;
             }
-            .logo-text {
+            .logo-container .logo-text {
                 font-size: 1.8rem;
+                letter-spacing: 1px; /* Slightly reduced letter spacing */
             }
-            .orb {
+            .logo-container .orb {
                 width: 40px;
                 height: 40px;
+                margin-left: 0.5rem;
+                margin-right: 0.5rem;
             }
+
+            /* Responsive adjustments for specific cards/sections */
+            .card {
+                padding: 1.5rem; /* Slightly less padding on mobile */
+            }
+            .card .h-64 {
+                height: 200px; /* Reduce height of preview boxes */
+            }
+
+            /* Color Customizer sliders */
+            .color-picker input[type="range"] {
+                width: calc(100% - 10px); /* Adjust for thumb on mobile */
+            }
+
+            /* Different Formats Section - Tabs */
+            .flex.justify-center.mb-8 > div {
+                flex-wrap: wrap; /* Allow tab buttons to wrap */
+                width: 100%; /* Full width for tab group */
+            }
+            .tab {
+                flex-grow: 1; /* Make tabs grow to fill space */
+                border-radius: 0 !important; /* Remove individual border-radius for stacked look */
+                border-bottom: 1px solid rgba(138, 43, 226, 0.3); /* Add bottom border for separation */
+            }
+            .tab:first-child { border-top-left-radius: 0.5rem !important; border-top-right-radius: 0.5rem !important; }
+            .tab:last-child { border-bottom-left-radius: 0.5rem !important; border-bottom-right-radius: 0.5rem !important; border-bottom: none; }
+            .tab:not(:last-child) { border-right: 1px solid rgba(138, 43, 226, 0.3) !important; } /* Re-add right border for column layout */
+
+            /* Business Card, App Icon, Social Media previews */
             .business-card {
-                width: 100%; /* Full width on small screens */
-                height: auto; /* Adjust height automatically */
+                width: 100%;
+                height: auto;
+                margin-bottom: 1.5rem; /* Space between card and text */
             }
             .app-icon {
                 width: 60px;
                 height: 60px;
             }
-            .logo-container.scale-150 {
-                transform: scale(1); /* Reset scale on smaller screens */
+            .app-icon .logo-font {
+                font-size: 0.75rem; /* Adjust font size for small icons */
+            }
+            .app-icon .orb {
+                width: 30px; /* Adjust orb size for small icons */
+                height: 30px;
+            }
+            .social-media-container .logo-font {
+                font-size: 2rem; /* Adjust for social media preview */
+            }
+            .social-media-container .orb {
+                width: 50px;
+                height: 50px;
+            }
+            .social-media-container .text-3xl {
+                font-size: 2rem;
+            }
+            .social-media-container .text-4xl {
+                font-size: 2.5rem;
+            }
+
+            /* 3D Cube Scene */
+            .scene {
+                width: 100%; /* Ensure scene fills container */
+                height: 250px; /* Fixed height for consistency */
+            }
+            .cube {
+                width: 180px; /* Make cube slightly smaller */
+                height: 180px;
+            }
+            .cube-face {
+                transform: translateZ(90px) !important; /* Adjust translateZ for smaller cube */
+            }
+            .back { transform: rotateY(180deg) translateZ(90px) !important; }
+            .right { transform: rotateY(90deg) translateZ(90px) !important; }
+            .left { transform: rotateY(-90deg) translateZ(90px) !important; }
+            .top { transform: rotateX(90deg) translateZ(90px) !important; }
+            .bottom { transform: rotateX(-90deg) translateZ(-90px) !important; } /* Fixed bottom face rotation */
+
+            /* Hologram container */
+            .hologram-container .w-64 { width: 180px; height: 180px; }
+            .hologram-container .w-48 { width: 140px; height: 140px; }
+
+            /* Brand Identity Section */
+            .brand-story p {
+                font-size: 0.9rem; /* Slightly smaller text for paragraphs */
+            }
+        }
+        @media (max-width: 480px) {
+             .logo-text {
+                letter-spacing: 1px; /* Even smaller letter spacing on very small screens */
+            }
+            .logo-container.scale-150 .bracket {
+                font-size: 2rem;
+            }
+             .logo-container.scale-150 .logo-text {
+                font-size: 1.5rem;
+            }
+            .logo-container.scale-150 .orb {
+                width: 40px;
+                height: 40px;
+            }
+            .tab {
+                font-size: 0.8rem; /* Smaller font for tabs */
+                padding: 0.6rem 0.8rem; /* Smaller padding */
+            }
+             .business-card {
+                height: 180px; /* Make card slightly smaller for very small screens */
+            }
+            .app-icon {
+                width: 50px;
+                height: 50px;
             }
         }
     </style>
@@ -597,13 +723,13 @@
                                 <input type="text" id="techTextInput" value="TECH" class="w-full bg-transparent border-b border-gray-700 focus:outline-none focus:border-purple-500 text-white text-sm">
                             </div>
                         </div>
-                        <div class="bg-black bg-opacity-50 p-4 rounded-lg">
+                        <div class="bg-black bg-opacity-50 p-2 rounded-lg">
                             <div class="flex items-center justify-between mb-2">
                                 <span class="text-sm text-gray-300">Metin Boyutu</span>
-                                <span class="text-sm text-gray-300" id="textSizeValue">2.5rem</span>
+                                <span class="text-sm text-gray-300" id="textSizeValue">1.5rem</span>
                             </div>
                             <div class="color-picker">
-                                <input type="range" min="1" max="5" step="0.1" value="2.5" class="w-full" id="textSize">
+                                <input type="range" min="1" max="5" step="0.1" value="1.2" class="w-full" id="textSize">
                             </div>
                         </div>
                         <div class="bg-black bg-opacity-50 p-4 rounded-lg">
@@ -699,11 +825,11 @@
                             </div>
                             
                             <div class="mt-8">
-                                <p class="text-gray-300 text-sm">Mücahit Taştan</p>
+                                <p class="text-gray-300 text-sm">Ahmet Yılmaz</p>
                                 <p class="text-purple-400 font-medium">Kurucu &amp; CEO</p>
                                 <div class="h-px bg-gradient-to-r from-purple-500 to-transparent my-2"></div>
                                 <p class="text-xs text-gray-400">info@consoletech.com</p>
-                                <p class="text-xs text-gray-400">+90 553 334 51 09</p>
+                                <p class="text-xs text-gray-400">+90 555 123 4567</p>
                                 <p class="text-xs text-gray-400">www.consoletech.com</p>
                             </div>
                         </div>

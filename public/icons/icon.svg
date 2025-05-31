@@ -1,0 +1,21 @@
+<svg width="192" height="192" viewBox="0 0 192 192" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="192" height="192" rx="32" fill="#4F46E5"/>
+  
+  <!-- YT Logo -->
+  <g transform="translate(48, 48)">
+    <!-- Y -->
+    <path d="M16 16L28 40L40 16M28 40V56" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    
+    <!-- T -->
+    <path d="M48 16H80M64 16V56" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  
+  <!-- Fitness Icon -->
+  <g transform="translate(72, 100)">
+    <rect x="0" y="16" width="8" height="8" rx="4" fill="white"/>
+    <rect x="40" y="16" width="8" height="8" rx="4" fill="white"/>
+    <rect x="8" y="18" width="32" height="4" rx="2" fill="white"/>
+    <rect x="16" y="12" width="16" height="12" rx="2" fill="white"/>
+  </g>
+</svg>
