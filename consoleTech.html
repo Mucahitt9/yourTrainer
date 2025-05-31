@@ -699,11 +699,11 @@
                             </div>
                             
                             <div class="mt-8">
-                                <p class="text-gray-300 text-sm">Mücahit Taştan</p>
+                                <p class="text-gray-300 text-sm">Ahmet Yılmaz</p>
                                 <p class="text-purple-400 font-medium">Kurucu &amp; CEO</p>
                                 <div class="h-px bg-gradient-to-r from-purple-500 to-transparent my-2"></div>
                                 <p class="text-xs text-gray-400">info@consoletech.com</p>
-                                <p class="text-xs text-gray-400">+90 553 334 51 09</p>
+                                <p class="text-xs text-gray-400">+90 555 123 4567</p>
                                 <p class="text-xs text-gray-400">www.consoletech.com</p>
                             </div>
                         </div>
@@ -998,9 +998,9 @@
                         <button class="custom-btn flex-1 px-4 py-2 rounded-lg" id="hologramBtn">
                             Hologram Efektini Değiştir
                         </button>
-                        <button class="bg-black bg-opacity-50 flex-1 px-4 py-2 rounded-lg hover:bg-opacity-70 transition tooltip">
+                        <button class="bg-black bg-opacity-50 flex-1 px-4 py-2 rounded-lg hover:bg-opacity-70 transition tooltip" id="arViewBtn">
                             AR Görünümü
-                            <span class="tooltip-text">Yakında!</span>
+                            <span class="tooltip-text">Simüle Edilmiş Deneyim</span>
                         </button>
                     </div>
                 </div>
@@ -1761,6 +1761,14 @@
                     showMessageBox(`${format} için indirme simüle edildi. Gerçek bir indirme işlemi için sunucu tarafı desteği gereklidir.`);
                 });
             });
+
+            // --- Simulated AR View Functionality ---
+            const arViewBtn = document.getElementById('arViewBtn');
+            if (arViewBtn) {
+                arViewBtn.addEventListener('click', function() {
+                    showMessageBox("AR Görünümü simüle ediliyor... Logonuzun gerçek dünyada nasıl görüneceğini hayal edin!");
+                });
+            }
 
             // Function to show custom message box
             function showMessageBox(message) {
