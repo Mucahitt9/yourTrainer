@@ -1,1 +1,39 @@
-import React from 'react';\nimport { Loader2 } from 'lucide-react';\n\nconst LoadingSpinner = ({ size = 'default', text = 'Yükleniyor...', fullScreen = true }) => {\n  const sizeClasses = {\n    small: 'h-4 w-4',\n    default: 'h-8 w-8',\n    large: 'h-12 w-12'\n  };\n\n  const LoadingContent = () => (\n    <div className=\"flex flex-col items-center justify-center space-y-3\">\n      <Loader2 className={`${sizeClasses[size]} text-primary-600 animate-spin`} />\n      {text && (\n        <p className=\"text-sm text-gray-600 font-medium animate-pulse\">\n          {text}\n        </p>\n      )}\n    </div>\n  );\n\n  if (fullScreen) {\n    return (\n      <div className=\"min-h-screen bg-gray-50 flex items-center justify-center\">\n        <div className=\"bg-white rounded-xl shadow-sm border border-gray-200 p-8\">\n          <LoadingContent />\n        </div>\n      </div>\n    );\n  }\n\n  return (\n    <div className=\"flex items-center justify-center p-8\">\n      <LoadingContent />\n    </div>\n  );\n};\n\nexport default LoadingSpinner;
+import React from 'react';
+import { Loader2 } from 'lucide-react';
+
+const LoadingSpinner = ({ size = 'default', text = 'Yükleniyor...', fullScreen = true }) => {
+  const sizeClasses = {
+    small: 'h-4 w-4',
+    default: 'h-8 w-8',
+    large: 'h-12 w-12'
+  };
+
+  const LoadingContent = () => (
+    <div className="flex flex-col items-center justify-center space-y-3">
+      <Loader2 className={`${sizeClasses[size]} text-primary-600 animate-spin`} />
+      {text && (
+        <p className="text-sm text-gray-600 font-medium animate-pulse">
+          {text}
+        </p>
+      )}
+    </div>
+  );
+
+  if (fullScreen) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+          <LoadingContent />
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex items-center justify-center p-8">
+      <LoadingContent />
+    </div>
+  );
+};
+
+export default LoadingSpinner;

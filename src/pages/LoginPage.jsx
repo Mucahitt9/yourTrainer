@@ -34,7 +34,7 @@ const LoginPage = () => {
       const result = await login(formData.kullaniciAdi, formData.sifre);
       
       if (result.success) {
-        navigate('/clients/new');
+        navigate('/dashboard');
       } else {
         setError(result.error);
       }
