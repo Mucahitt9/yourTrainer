@@ -6,6 +6,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     host: '192.168.1.132', // 👈 Bilgisayar IP'sinden erişim için bu şart
+    localhost: 'localhost', // 👈 Yerel geliştirme için localhost
     port: 1997,       // 👈 Port numarası (telefon tarayıcısında da bu port kullanılacak)
     open: true        // Projeyi otomatik açar
   },

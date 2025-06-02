@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
-import { Calendar, DollarSign, Clock, Users } from 'lucide-react';
-import { haftaninGunleri } from '../../data/mockData';
+import React, { useEffect, useMemo, memo } from 'react';
+import { Calendar, DollarSign, Clock, Users, User, Calculator } from 'lucide-react';
 import { hesaplaTahminiBitisTarihi, hesaplaToplamUcret, formatDate } from '../../utils/helpers';
+import FormField from '../form/FormField';
+import DaySelector from '../form/DaySelector';
 
-const Step1TemelBilgiler = ({ formData, updateFormData, errors, setErrors }) => {
+const Step1TemelBilgiler = memo(({ formData, updateFormData, errors, setErrors }) => {
   
   // Toplam ücret hesaplama (ders sayısı değiştiğinde)
   useEffect(() => {
@@ -14,7 +15,7 @@ const Step1TemelBilgiler = ({ formData, updateFormData, errors, setErrors }) => 
       );
       updateFormData({ toplam_ucret: toplam });
     }
-  }, [formData.alinan_ders_sayisi, formData.ders_basina_ucret]);
+  }, [formData.alinan_ders_sayisi, formData.ders_basina_ucret, updateFormData]);
 
   // Tahmini bitiş tarihi hesaplama
   useEffect(() => {
@@ -30,7 +31,7 @@ const Step1TemelBilgiler = ({ formData, updateFormData, errors, setErrors }) => 
       );
       updateFormData({ tahmini_bitis_tarihi: bitisTarihi });
     }
-  }, [formData.ders_baslangic_tarihi, formData.alinan_ders_sayisi, formData.haftalik_ders_gunleri]);
+  }, [formData.ders_baslangic_tarihi, formData.alinan_ders_sayisi, formData.haftalik_ders_gunleri, updateFormData]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -46,19 +47,21 @@ const Step1TemelBilgiler = ({ formData, updateFormData, errors, setErrors }) => 
     }
   };
 
-  const handleGunSecimi = (gunValue) => {
-    const mevcutGunler = formData.haftalik_ders_gunleri || [];
-    let yeniGunler;
+  const handleFieldUpdate = (field, value) => {
+    updateFormData({ [field]: value });
     
-    if (mevcutGunler.includes(gunValue)) {
-      // Çıkar
-      yeniGunler = mevcutGunler.filter(gun => gun !== gunValue);
-    } else {
-      // Ekle
-      yeniGunler = [...mevcutGunler, gunValue];
+    // Error'ı temizle
+    if (errors[field]) {
+      setErrors(prev => {
+        const newErrors = { ...prev };
+        delete newErrors[field];
+        return newErrors;
+      });
     }
-    
-    updateFormData({ haftalik_ders_gunleri: yeniGunler });
+  };
+
+  const handleGunSecimi = (gunler) => {
+    updateFormData({ haftalik_ders_gunleri: gunler });
     
     // Error'ı temizle
     if (errors.haftalik_ders_gunleri) {
@@ -70,212 +73,181 @@ const Step1TemelBilgiler = ({ formData, updateFormData, errors, setErrors }) => 
     }
   };
 
+  // Program özeti hesaplama
+  const programSummary = useMemo(() => {
+    if (!formData.alinan_ders_sayisi || !formData.haftalik_ders_gunleri?.length) return null;
+    
+    const totalLessons = parseInt(formData.alinan_ders_sayisi);
+    const weeklyDays = formData.haftalik_ders_gunleri.length;
+    const approximateWeeks = Math.ceil(totalLessons / weeklyDays);
+    
+    return {
+      totalLessons,
+      weeklyDays,
+      approximateWeeks
+    };
+  }, [formData.alinan_ders_sayisi, formData.haftalik_ders_gunleri]);
+
   // Bugünün tarihi (minimum tarih için)
   const bugun = new Date().toISOString().split('T')[0];
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h2 className="text-xl font-semibold text-gray-900 mb-2">Üye Temel Bilgileri</h2>
-        <p className="text-gray-600">Üyenizin kişisel ve ders bilgilerini girin.</p>
+    <div className="space-y-8">
+      {/* Header */}
+      <div className="text-center pb-6 border-b border-gray-200">
+        <div className="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-3">
+          <User className="h-6 w-6 text-primary-600" />
+        </div>
+        <h2 className="text-2xl font-bold text-gray-900 mb-2">Temel Bilgiler</h2>
+        <p className="text-gray-600">Üyenizin kişisel ve ders bilgilerini girin</p>
       </div>
 
       {/* Ad Soyad Satırı */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label htmlFor="ad" className="block text-sm font-medium text-gray-700 mb-2">
-            Üye Adı *
-          </label>
-          <input
-            type="text"
-            id="ad"
-            name="ad"
-            value={formData.ad}
-            onChange={handleInputChange}
-            className={`input-field ${errors.ad ? 'border-red-300 focus:ring-red-500' : ''}`}
-            placeholder="Örn: Ayşe"
-          />
-          {errors.ad && <p className="mt-1 text-sm text-red-600">{errors.ad}</p>}
-        </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <FormField
+          label="Üye Adı"
+          name="ad"
+          value={formData.ad}
+          onChange={handleInputChange}
+          error={errors.ad}
+          required
+          placeholder="Örn: Ayşe"
+          icon={User}
+          autoFocus
+        />
 
-        <div>
-          <label htmlFor="soyad" className="block text-sm font-medium text-gray-700 mb-2">
-            Üye Soyadı *
-          </label>
-          <input
-            type="text"
-            id="soyad"
-            name="soyad"
-            value={formData.soyad}
-            onChange={handleInputChange}
-            className={`input-field ${errors.soyad ? 'border-red-300 focus:ring-red-500' : ''}`}
-            placeholder="Örn: Demir"
-          />
-          {errors.soyad && <p className="mt-1 text-sm text-red-600">{errors.soyad}</p>}
-        </div>
+        <FormField
+          label="Üye Soyadı"
+          name="soyad"
+          value={formData.soyad}
+          onChange={handleInputChange}
+          error={errors.soyad}
+          required
+          placeholder="Örn: Demir"
+          icon={User}
+        />
       </div>
 
-      {/* Yaş */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label htmlFor="yas" className="block text-sm font-medium text-gray-700 mb-2">
-            Üye Yaşı *
-          </label>
-          <input
-            type="number"
-            id="yas"
-            name="yas"
-            min="16"
-            max="80"
-            value={formData.yas}
-            onChange={handleInputChange}
-            className={`input-field ${errors.yas ? 'border-red-300 focus:ring-red-500' : ''}`}
-            placeholder="25"
-          />
-          {errors.yas && <p className="mt-1 text-sm text-red-600">{errors.yas}</p>}
-        </div>
+      {/* Yaş ve Ders Sayısı */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <FormField
+          label="Üye Yaşı"
+          name="yas"
+          type="number"
+          value={formData.yas}
+          onChange={handleInputChange}
+          error={errors.yas}
+          required
+          min="16"
+          max="80"
+          placeholder="25"
+          helpText="14-80 yaş arası"
+        />
 
-        <div>
-          <label htmlFor="alinan_ders_sayisi" className="block text-sm font-medium text-gray-700 mb-2">
-            Satın Alınan Özel Ders Sayısı *
-          </label>
-          <input
-            type="number"
-            id="alinan_ders_sayisi"
-            name="alinan_ders_sayisi"
-            min="1"
-            max="200"
-            value={formData.alinan_ders_sayisi}
-            onChange={handleInputChange}
-            className={`input-field ${errors.alinan_ders_sayisi ? 'border-red-300 focus:ring-red-500' : ''}`}
-            placeholder="40"
-          />
-          {errors.alinan_ders_sayisi && <p className="mt-1 text-sm text-red-600">{errors.alinan_ders_sayisi}</p>}
-        </div>
+        <FormField
+          label="Alınan Ders Sayısı"
+          name="alinan_ders_sayisi"
+          type="number"
+          value={formData.alinan_ders_sayisi}
+          onChange={handleInputChange}
+          error={errors.alinan_ders_sayisi}
+          required
+          min="1"
+          max="200"
+          placeholder="40"
+          icon={Users}
+          helpText="1-200 ders arası"
+        />
       </div>
 
       {/* Ücret Bilgileri */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label htmlFor="ders_basina_ucret" className="block text-sm font-medium text-gray-700 mb-2">
-            Ders Başına Ücret (TL)
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <FormField
+          label="Ders Başına Ücret (TL)"
+          name="ders_basina_ucret"
+          type="number"
+          value={formData.ders_basina_ucret}
+          onChange={handleInputChange}
+          min="50"
+          max="1000"
+          placeholder="200"
+          icon={DollarSign}
+        />
+
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-gray-700">
+            Toplam Ücret
           </label>
           <div className="relative">
-            <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-            <input
-              type="number"
-              id="ders_basina_ucret"
-              name="ders_basina_ucret"
-              min="50"
-              max="1000"
-              value={formData.ders_basina_ucret}
-              onChange={handleInputChange}
-              className="input-field pl-10"
-              placeholder="200"
-            />
+            <Calculator className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+            <div className="w-full pl-10 pr-3 py-2.5 bg-gray-50 border border-gray-300 rounded-lg text-gray-700 font-medium">
+              {formData.toplam_ucret ? `${formData.toplam_ucret.toLocaleString('tr-TR')} TL` : '0 TL'}
+            </div>
           </div>
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Özel Ders Toplam Ücreti
-          </label>
-          <div className="input-field bg-gray-50 text-gray-700 font-medium">
-            {formData.toplam_ucret ? `${formData.toplam_ucret.toLocaleString('tr-TR')} TL` : '0 TL'}
-          </div>
+          <p className="text-xs text-gray-500">Otomatik hesaplanır</p>
         </div>
       </div>
 
       {/* Tarih Bilgileri */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label htmlFor="ders_baslangic_tarihi" className="block text-sm font-medium text-gray-700 mb-2">
-            Özel Ders Başlangıç Tarihi *
-          </label>
-          <div className="relative">
-            <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-            <input
-              type="date"
-              id="ders_baslangic_tarihi"
-              name="ders_baslangic_tarihi"
-              min={bugun}
-              value={formData.ders_baslangic_tarihi}
-              onChange={handleInputChange}
-              className={`input-field pl-10 ${errors.ders_baslangic_tarihi ? 'border-red-300 focus:ring-red-500' : ''}`}
-            />
-          </div>
-          {errors.ders_baslangic_tarihi && <p className="mt-1 text-sm text-red-600">{errors.ders_baslangic_tarihi}</p>}
-        </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <FormField
+          label="Başlangıç Tarihi"
+          name="ders_baslangic_tarihi"
+          type="date"
+          value={formData.ders_baslangic_tarihi}
+          onChange={handleInputChange}
+          error={errors.ders_baslangic_tarihi}
+          required
+          min={bugun}
+          icon={Calendar}
+        />
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Tahmini Özel Ders Bitiş Tarihi
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-gray-700">
+            Tahmini Bitiş Tarihi
           </label>
           <div className="relative">
             <Clock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-            <div className="input-field pl-10 bg-gray-50 text-gray-700">
+            <div className="w-full pl-10 pr-3 py-2.5 bg-gray-50 border border-gray-300 rounded-lg text-gray-700">
               {formData.tahmini_bitis_tarihi 
                 ? formatDate(formData.tahmini_bitis_tarihi)
                 : 'Otomatik hesaplanacak'
               }
             </div>
           </div>
+          <p className="text-xs text-gray-500">Program günlerine göre hesaplanır</p>
         </div>
       </div>
 
       {/* Haftalık Ders Günleri */}
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-3">
-          Haftalık Ders Günleri Seçimi *
-        </label>
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-2">
-          {haftaninGunleri.map((gun) => {
-            const isSelected = formData.haftalik_ders_gunleri?.includes(gun.value);
-            return (
-              <button
-                key={gun.value}
-                type="button"
-                onClick={() => handleGunSecimi(gun.value)}
-                className={`p-3 text-sm font-medium rounded-lg border-2 transition-colors duration-200 ${
-                  isSelected
-                    ? 'bg-primary-600 border-primary-600 text-white'
-                    : 'bg-white border-gray-300 text-gray-700 hover:border-primary-300 hover:bg-primary-50'
-                }`}
-              >
-                {gun.label}
-              </button>
-            );
-          })}
-        </div>
-        {errors.haftalik_ders_gunleri && <p className="mt-2 text-sm text-red-600">{errors.haftalik_ders_gunleri}</p>}
-        
-        {formData.haftalik_ders_gunleri?.length > 0 && (
-          <div className="mt-3 flex items-center text-sm text-gray-600">
-            <Users className="h-4 w-4 mr-2" />
-            Seçilen günler: {formData.haftalik_ders_gunleri.join(', ')} 
-            <span className="ml-2 text-gray-500">
-              (Haftada {formData.haftalik_ders_gunleri.length} gün)
-            </span>
-          </div>
-        )}
-      </div>
+      <DaySelector
+        selectedDays={formData.haftalik_ders_gunleri}
+        onChange={handleGunSecimi}
+        error={errors.haftalik_ders_gunleri}
+      />
 
-      {/* Bilgi Notu */}
-      {formData.alinan_ders_sayisi && formData.haftalik_ders_gunleri?.length > 0 && (
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+      {/* Program Summary */}
+      {programSummary && (
+        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-6 card-animate">
           <div className="flex items-start">
             <div className="flex-shrink-0">
-              <Clock className="h-5 w-5 text-blue-600 mt-0.5" />
+              <Clock className="h-6 w-6 text-blue-600 mt-1" />
             </div>
-            <div className="ml-3">
-              <h4 className="text-sm font-medium text-blue-800">Ders Programı Özeti</h4>
-              <div className="mt-1 text-sm text-blue-700 space-y-1">
-                <p>• Toplam {formData.alinan_ders_sayisi} ders alınacak</p>
-                <p>• Haftada {formData.haftalik_ders_gunleri.length} gün ders</p>
-                <p>• Yaklaşık {Math.ceil(formData.alinan_ders_sayisi / formData.haftalik_ders_gunleri.length)} hafta sürecek</p>
-                {formData.tahmini_bitis_tarihi && (
-                  <p>• Tahmini bitiş: {formatDate(formData.tahmini_bitis_tarihi)}</p>
-                )}
+            <div className="ml-4 flex-1">
+              <h4 className="text-lg font-semibold text-blue-900 mb-3">Program Özeti</h4>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="bg-white/50 rounded-lg p-3 text-center hover-lift">
+                  <div className="text-2xl font-bold text-blue-600">{programSummary.totalLessons}</div>
+                  <div className="text-sm text-blue-700">Toplam Ders</div>
+                </div>
+                <div className="bg-white/50 rounded-lg p-3 text-center hover-lift">
+                  <div className="text-2xl font-bold text-blue-600">{programSummary.weeklyDays}</div>
+                  <div className="text-sm text-blue-700">Haftalık Gün</div>
+                </div>
+                <div className="bg-white/50 rounded-lg p-3 text-center hover-lift">
+                  <div className="text-2xl font-bold text-blue-600">~{programSummary.approximateWeeks}</div>
+                  <div className="text-sm text-blue-700">Hafta Süre</div>
+                </div>
               </div>
             </div>
           </div>
@@ -283,6 +255,8 @@ const Step1TemelBilgiler = ({ formData, updateFormData, errors, setErrors }) => 
       )}
     </div>
   );
-};
+});
+
+Step1TemelBilgiler.displayName = 'Step1TemelBilgiler';
 
 export default Step1TemelBilgiler;

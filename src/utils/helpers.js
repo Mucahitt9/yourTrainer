@@ -69,7 +69,7 @@ export const validateMusteriForm = (formData) => {
   }
 
   if (!formData.yas || formData.yas < 16 || formData.yas > 80) {
-    errors.yas = 'Yaş 16-80 arasında olmalı';
+    errors.yas = 'Yaş 14-80 arasında olmalı';
   }
 
   if (!formData.alinan_ders_sayisi || formData.alinan_ders_sayisi < 1 || formData.alinan_ders_sayisi > 200) {

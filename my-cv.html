@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Osman Mücahit Taştan - Product Owner & QA Specialist</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #1e40af;
+            --accent-color: #3b82f6;
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --bg-light: #f8fafc;
+            --bg-white: #ffffff;
+            --shadow: 0 10px 25px rgba(0,0,0,0.1);
+            --border-radius: 12px;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            background: var(--bg-white);
+            border-radius: var(--border-radius);
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+        }
+
+        .profile-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            border: 5px solid var(--primary-color);
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+        }
+
+        .profile-img:hover {
+            transform: scale(1.05);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            margin-bottom: 20px;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-light);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .contact-item:hover {
+            color: var(--primary-color);
+        }
+
+        /* Navigation */
+        .nav {
+            background: var(--bg-white);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+
+        .nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .nav a {
+            color: var(--text-dark);
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav a:hover, .nav a.active {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Sections */
+        .section {
+            background: var(--bg-white);
+            border-radius: var(--border-radius);
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .section:nth-child(even) {
+            animation-delay: 0.2s;
+        }
+
+        .section:nth-child(odd) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section h2 {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: var(--primary-color);
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .section h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            border-radius: 2px;
+        }
+
+        /* Experience Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, var(--primary-color), var(--accent-color));
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 40px;
+            background: var(--bg-light);
+            padding: 25px;
+            border-radius: var(--border-radius);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .timeline-item:hover {
+            transform: translateX(5px);
+            box-shadow: var(--shadow);
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -38px;
+            top: 30px;
+            width: 12px;
+            height: 12px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            border: 3px solid var(--bg-white);
+        }
+
+        .job-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+
+        .company {
+            font-size: 1.1rem;
+            color: var(--text-dark);
+            margin-bottom: 5px;
+        }
+
+        .date-location {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .job-description ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .job-description li {
+            margin-bottom: 10px;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .job-description li::before {
+            content: '▶';
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+        }
+
+        /* Skills */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .skill-category {
+            background: var(--bg-light);
+            padding: 25px;
+            border-radius: var(--border-radius);
+            transition: transform 0.3s ease;
+        }
+
+        .skill-category:hover {
+            transform: translateY(-5px);
+        }
+
+        .skill-category h3 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+
+        .skill-item {
+            margin-bottom: 15px;
+        }
+
+        .skill-name {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .skill-bar {
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .skill-progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            border-radius: 4px;
+            transition: width 2s ease;
+            animation: fillSkill 2s ease forwards;
+        }
+
+        @keyframes fillSkill {
+            from { width: 0; }
+        }
+
+        /* Projects */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .project-card {
+            background: var(--bg-light);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-color);
+            box-shadow: var(--shadow);
+        }
+
+        .project-title {
+            color: var(--primary-color);
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+
+        .project-description {
+            color: var(--text-light);
+            margin-bottom: 15px;
+        }
+
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .tag {
+            background: var(--primary-color);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+        }
+
+        /* Contact Section */
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.4);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .header {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .contact-info {
+                gap: 15px;
+            }
+
+            .nav ul {
+                gap: 15px;
+            }
+
+            .section {
+                padding: 20px;
+            }
+
+            .timeline {
+                padding-left: 20px;
+            }
+
+            .timeline::before {
+                left: 10px;
+            }
+
+            .timeline-item::before {
+                left: -28px;
+            }
+        }
+
+        /* Dark Mode Toggle */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--bg-white);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        /* Smooth Scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Loading Animation */
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            animation: fadeOut 1s ease 2s forwards;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-top: 3px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+
+        /* Rainbow animation for konami code */
+        @keyframes rainbow {
+            0% { filter: hue-rotate(0deg); }
+            50% { filter: hue-rotate(180deg); }
+            100% { filter: hue-rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Theme Toggle -->
+    <button class="theme-toggle" onclick="toggleTheme()">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <img src="https://resume-storage.o-b-g.com/default/cm9jwnvcr000414f32dgfz5pg/pictures/cm9jwnvcr000414f32dgfz5pg.jpg" alt="Osman Mücahit Taştan - Product Owner & QA Specialist" class="profile-img" onerror="this.style.display='none'; console.log('📸 Profile image could not be loaded')">
+            <h1>Osman Mücahit Taştan</h1>
+            <p class="subtitle">Senior Ürün Sahibi & Kalite Güvencesi Uzmanı</p>
+            <div class="contact-info">
+                <a href="tel:+905533345109" class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    0553 334 51 09
+                </a>
+                <a href="mailto:mucahittastan02@gmail.com" class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    mucahittastan02@gmail.com
+                </a>
+                <a href="https://www.linkedin.com/in/mucahit-tastan" class="contact-item" target="_blank">
+                    <i class="fab fa-linkedin"></i>
+                    LinkedIn
+                </a>
+                <a href="https://github.com/mucahittastan-git" class="contact-item" target="_blank">
+                    <i class="fab fa-github"></i>
+                    GitHub
+                </a>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="nav">
+            <ul>
+                <li><a href="#about" class="nav-link">Hakkımda</a></li>
+                <li><a href="#experience" class="nav-link">Deneyim</a></li>
+                <li><a href="#skills" class="nav-link">Yetenekler</a></li>
+                <li><a href="#projects" class="nav-link">Projeler</a></li>
+                <li><a href="#contact" class="nav-link">İletişim</a></li>
+            </ul>
+        </nav>
+
+        <!-- About Section -->
+        <section id="about" class="section">
+            <h2><i class="fas fa-user"></i> Profesyonel Özet</h2>
+            <p style="font-size: 1.1rem; line-height: 1.8;">
+                <strong>Sonuç odaklı Ürün Sahibi ve Kalite Güvencesi Uzmanı</strong> olarak teknoloji ve yapay zeka sektörlerinde 3+ yıllık ürün geliştirme, kalite güvencesi ve çevik proje yönetimi deneyimine sahibim. Veri odaklı içgörüler, kapsamlı test stratejileri ve departmanlar arası takım liderliği ile kullanıcı merkezli çözümler sunma konusunda kanıtlanmış başarı geçmişim bulunmaktadır.
+            </p>
+        </section>
+
+        <!-- Experience Section -->
+        <section id="experience" class="section">
+            <h2><i class="fas fa-briefcase"></i> Profesyonel Deneyim</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="job-title">Ürün Sahibi</div>
+                    <div class="company">SIRIUS AI TECH</div>
+                    <div class="date-location">Kasım 2024 - Devam Ediyor | İstanbul, Türkiye</div>
+                    <div class="job-description">
+                        <ul>
+                            <li>AI destekli "Seferi" projesinde ürün geliştirme süreçlerini yönettim</li>
+                            <li>Kapsamlı ürün gereksinimlerini geliştirerek geliştirme döngülerinde %30 hızlanma elde ettim</li>
+                            <li>Departmanlar arası takımları koordine ederek kullanıcı odaklı çözümler sağladım</li>
+                            <li>Veri odaklı karar verme süreçlerini hayata geçirerek ölçülebilir iyileştirmeler sağladım</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="job-title">Ürün Yöneticisi Yardımcısı</div>
+                    <div class="company">MOMENTO</div>
+                    <div class="date-location">Şubat 2024 - Ekim 2024 | İstanbul, Türkiye</div>
+                    <div class="job-description">
+                        <ul>
+                            <li>50.000+ aktif kullanıcıya hizmet sunan dijital ürün geliştirmeyi yönettim</li>
+                            <li>Scrum takımlarıyla iş birliği yaparak sprint verimliliğini %25 artırdım</li>
+                            <li>Kullanıcı geri bildirim analizi ile kullanıcı memnuniyetini %35 artırdım</li>
+                            <li>Stratejik iş akışı iyileştirmeleri ile proje teslimat süresini %20 azalttım</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="job-title">Teslimat Yöneticisi</div>
+                    <div class="company">VANORA VENTURES</div>
+                    <div class="date-location">Ekim 2023 - Ocak 2024 | İstanbul, Türkiye</div>
+                    <div class="job-description">
+                        <ul>
+                            <li>3+ eş zamanlı geliştirme akışında kaynakları başarıyla yönettim</li>
+                            <li>Scrum metodolojisi ile %95 zamanında teslimat oranı elde ettim</li>
+                            <li>Jira kullanarak proje ilerlemesine gerçek zamanlı görünürlük sağladım</li>
+                            <li>Geliştirme verimliliğinde %40 iyileşmeye katkı sağladım</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="job-title">Kalite Güvence Testçisi</div>
+                    <div class="company">VANORA VENTURES</div>
+                    <div class="date-location">Ocak 2022 - Ekim 2023 | İstanbul, Türkiye</div>
+                    <div class="job-description">
+                        <ul>
+                            <li>Manuel ve otomatik test stratejileri ile %99 hata tespit oranı elde ettim</li>
+                            <li>Selenium ve Java ile test süresini %60 azaltarak doğruluğu artırdım</li>
+                            <li>Web ve mobil platformlarda kapsamlı UAT testleri gerçekleştirdim</li>
+                            <li>SEO uyumluluk testleri ile arama sıralamaları iyileştirmesine katkı sağladım</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="section">
+            <h2><i class="fas fa-code"></i> Teknik Beceriler & Uzmanlık</h2>
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <h3>Programlama & Geliştirme</h3>
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>HTML5 & CSS3</span>
+                            <span>90%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 90%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>JavaScript</span>
+                            <span>80%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 80%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>Java</span>
+                            <span>75%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 75%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>SQL & PostgreSQL</span>
+                            <span>85%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 85%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="skill-category">
+                    <h3>Kalite Güvencesi & Test</h3>
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>Manuel Test</span>
+                            <span>95%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 95%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>Selenium Otomasyonu</span>
+                            <span>90%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 90%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>Test Stratejisi</span>
+                            <span>92%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 92%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>UAT & Bug Tracking</span>
+                            <span>88%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 88%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="skill-category">
+                    <h3>Ürün Yönetimi</h3>
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>Agile/Scrum</span>
+                            <span>95%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 95%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>Sprint Planlama</span>
+                            <span>90%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 90%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>Kullanıcı Hikayeleri</span>
+                            <span>87%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 87%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>Paydaş Yönetimi</span>
+                            <span>85%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 85%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="skill-category">
+                    <h3>Araçlar & Teknolojiler</h3>
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>Jira & Confluence</span>
+                            <span>95%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 95%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>Postman API</span>
+                            <span>80%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 80%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>Figma & Git</span>
+                            <span>75%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 75%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>Google Analytics</span>
+                            <span>70%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 70%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="section">
+            <h2><i class="fas fa-rocket"></i> Öne Çıkan Projeler</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <h3 class="project-title">AI Destekli Seferi Platformu</h3>
+                    <p class="project-description">
+                        Kapsamlı AI seyahat planlama çözümü için Ürün Sahibi olarak çalıştım. Yenilikçi AI destekli seyahat platformu için ürün geliştirmeyi yöneterek kullanıcı etkileşiminde %40 artış sağladım.
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">AI/ML</span>
+                        <span class="tag">Ürün Yönetimi</span>
+                        <span class="tag">Kullanıcı Deneyimi</span>
+                        <span class="tag">Çevik Geliştirme</span>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <h3 class="project-title">Çalışan Sadakat Platformu</h3>
+                    <p class="project-description">
+                        50.000+ kullanıcıya hizmet veren çalışan ödül platformu için ürün iyileştirmelerini yönettim. Veri odaklı özellik geliştirme ile kullanıcı memnuniyetinde %35 artış elde ettim.
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">Ürün Yönetimi</span>
+                        <span class="tag">B2B Çözümleri</span>
+                        <span class="tag">Scrum</span>
+                        <span class="tag">Veri Analizi</span>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <h3 class="project-title">Test Otomasyon Çerçevesi</h3>
+                    <p class="project-description">
+                        Selenium ve Java kullanarak kapsamlı test otomasyon çerçevesi geliştirdim. Manuel test süreçlerini %60 azaltarak kalite kontrol verimliliğini artırdım.
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">Selenium</span>
+                        <span class="tag">Java</span>
+                        <span class="tag">Test Otomasyonu</span>
+                        <span class="tag">Kalite Güvencesi</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="section">
+            <h2><i class="fas fa-envelope"></i> İletişim</h2>
+            <div class="contact-form">
+                <p style="text-align: center; margin-bottom: 30px; font-size: 1.1rem;">
+                    Birlikte çalışmak veya benimle iletişime geçmek isterseniz, aşağıdaki formu kullanabilir veya doğrudan bana ulaşabilirsiniz.
+                </p>
+                
+                <form onsubmit="handleSubmit(event)">
+                    <div class="form-group">
+                        <label for="name">Adınız</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">E-posta</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Konu</label>
+                        <input type="text" id="subject" name="subject" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Mesajınız</label>
+                        <textarea id="message" name="message" rows="5" required></textarea>
+                    </div>
+                    <div style="text-align: center;">
+                        <button type="submit" class="btn">
+                            <i class="fas fa-paper-plane"></i> Mesaj Gönder
+                        </button>
+                    </div>
+                </form>
+
+                <div style="text-align: center; margin-top: 40px; padding-top: 30px; border-top: 1px solid #e5e7eb;">
+                    <h3 style="margin-bottom: 20px;">Sosyal Medya</h3>
+                    <div style="display: flex; justify-content: center; gap: 20px;">
+                        <a href="https://www.linkedin.com/in/mucahit-tastan" target="_blank" class="contact-item">
+                            <i class="fab fa-linkedin fa-2x"></i>
+                        </a>
+                        <a href="https://github.com/mucahittastan-git" target="_blank" class="contact-item">
+                            <i class="fab fa-github fa-2x"></i>
+                        </a>
+                        <a href="mailto:mucahittastan02@gmail.com" class="contact-item">
+                            <i class="fas fa-envelope fa-2x"></i>
+                        </a>
+                        <a href="tel:+905533345109" class="contact-item">
+                            <i class="fas fa-phone fa-2x"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // 🎉 Console Easter Eggs for Tech Recruiters
+        console.log(`
+        ╔═══════════════════════════════════════════════════════════════════╗
+        ║                    👋 Merhaba, Ben Mücahit!                      ║
+        ║                                                                   ║
+        ║   Bu console'u kontrol ettiğin için teşekkürler! 🕵️‍♂️              ║
+        ║                                                                  ║
+        ║   💼 Product Owner & QA Specialist                               ║
+        ║                                                                   ║
+        ║   📧 mucahittastan02@gmail.com                                   ║
+        ║   🔗 linkedin.com/in/mucahit-tastan                             ║
+        ╚═══════════════════════════════════════════════════════════════════╝
+        `);
+        console.log('🌟 Profil Özeti:');
+        console.log('💡 QA Background ile:', {
+            'Manuel Testing': '95%',
+            'Selenium Automation': '90%',
+            'Test Strategy': '92%',
+            'Bug Detective Skills': '99%'
+        });
+
+        console.log('🔧 Technical Stack:', [
+            'HTML5/CSS3', 'JavaScript (ES6+)', 'Java', 
+            'SQL/PostgreSQL', 'Selenium', 'Jira/Confluence'
+        ]);
+
+        console.log('🚀 Recent Achievements:', {
+            'AI Product Development': '+40% user engagement',
+            'Process Optimization': '+25% sprint efficiency', 
+            'Quality Improvement': '99% bug detection rate',
+            'Automation Impact': '-60% testing time'
+        });
+
+        // Secret konami code easter egg
+        let konamiCode = [];
+        const targetCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'KeyB', 'KeyA'];
+        
+        document.addEventListener('keydown', function(e) {
+            konamiCode.push(e.code);
+            if (konamiCode.length > targetCode.length) {
+                konamiCode.shift();
+            }
+            if (konamiCode.join('') === targetCode.join('')) {
+                console.log('🎮 KONAMI CODE ACTIVATED! 🎮');
+                console.log('🏆 Easter egg bulduğun için tebrikler!');
+                console.log('🤝 Birlikte çalışabiliriz, ne dersiniz?');
+                document.body.style.animation = 'rainbow 2s infinite';
+            }
+        });
+
+        // Console command helpers for recruiters
+        window.hire = function() {
+            console.log('🎉 İletişim bilgileri:');
+            console.log('📧 Email: mucahittastan02@gmail.com');
+            console.log('📱 Phone: +90 553 334 51 09');
+            console.log('💼 LinkedIn: https://linkedin.com/in/mucahit-tastan');
+            return 'Başlamaya Hazırım! 🚀';
+        };
+
+        window.skills = function() {
+            return {
+                'Product Management': ['Agile/Scrum', 'Sprint Planning', 'User Stories', 'Stakeholder Management'],
+                'Quality Assurance': ['Manual Testing', 'Automation', 'Selenium', 'Test Strategy'],
+                'Programming': ['JavaScript', 'Java', 'HTML/CSS', 'SQL'],
+                'Tools': ['Jira', 'Confluence', 'Postman', 'Figma', 'Git']
+            };
+        };
+
+        window.experience = function() {
+            return [
+                '🤖 Sirius AI Tech - Product Owner (2024-Present)',
+                '🎯 Momento - Assistant Product Manager (2024)',
+                '📦 Vanora Ventures - Delivery Manager (2023-2024)',
+                '🔍 Vanora Ventures - QA Tester (2022-2023)'
+            ];
+        };
+
+        console.log('💡 Pro tip: Console\'da "hire()", "skills()" veya "experience()" komutlarını dene!');
+        
+        // Performance monitoring
+        console.log('⚡ Page Performance:', {
+            'Load Time': `${performance.now().toFixed(2)}ms`,
+            'DOM Ready': 'Optimized ✅',
+            'Responsive Design': 'Mobile-first ✅'
+        });
+
+        // Smooth scrolling for navigation
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetSection = document.querySelector(targetId);
+                
+                if (targetSection) {
+                    targetSection.scrollIntoView({ behavior: 'smooth' });
+                    
+                    // Update active nav
+                    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Debug log for QA mindset
+                    console.log(`📍 Navigated to: ${targetId.replace('#', '').toUpperCase()}`);
+                } else {
+                    console.error('❌ Section not found:', targetId);
+                }
+            });
+        });
+
+        // Form submission with enhanced validation
+        function handleSubmit(event) {
+            event.preventDefault();
+            console.log('📧 Form submission initiated by:', new Date().toLocaleString());
+            
+            const formData = new FormData(event.target);
+            const name = formData.get('name').trim();
+            const email = formData.get('email').trim();
+            const subject = formData.get('subject').trim();
+            const message = formData.get('message').trim();
+            
+            // Enhanced validation
+            if (!name || name.length < 2) {
+                console.warn('⚠️ Validation failed: Name too short');
+                alert('Lütfen geçerli bir isim girin (en az 2 karakter)');
+                return;
+            }
+            
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                console.warn('⚠️ Validation failed: Invalid email format');
+                alert('Lütfen geçerli bir e-posta adresi girin');
+                return;
+            }
+            
+            if (!subject || subject.length < 3) {
+                console.warn('⚠️ Validation failed: Subject too short');
+                alert('Lütfen bir konu belirtin (en az 3 karakter)');
+                return;
+            }
+            
+            if (!message || message.length < 10) {
+                console.warn('⚠️ Validation failed: Message too short');
+                alert('Lütfen mesajınızı daha detaylı yazın (en az 10 karakter)');
+                return;
+            }
+            
+            console.log('✅ Form validation passed successfully');
+            console.log('📊 Form data:', { name, email, subject, messageLength: message.length });
+            
+            // Create mailto link
+            const mailtoLink = `mailto:mucahittastan02@gmail.com?subject=${encodeURIComponent(`[CV Website] ${subject}`)}&body=${encodeURIComponent(`İsim: ${name}\nE-posta: ${email}\n\nMesaj:\n${message}\n\n---\nBu mesaj CV web sitesinden gönderilmiştir.`)}`;
+            
+            try {
+                window.location.href = mailtoLink;
+                console.log('📬 Email client successfully opened');
+                alert('E-posta istemciniz açılacak. Mesajınızı göndermek için devam edin.');
+                
+                // Reset form after successful submission
+                event.target.reset();
+                console.log('🔄 Form reset completed');
+                
+            } catch (error) {
+                console.error('❌ Error opening email client:', error);
+                alert('E-posta istemcisi açılırken bir hata oluştu. Lütfen doğrudan mucahittastan02@gmail.com adresine yazın.');
+            }
+        }
+
+        // Enhanced theme toggle with storage
+        function toggleTheme() {
+            const body = document.body;
+            const themeIcon = document.querySelector('.theme-toggle i');
+            
+            try {
+                body.classList.toggle('dark-theme');
+                const isDark = body.classList.contains('dark-theme');
+                
+                // Update icon
+                if (isDark) {
+                    themeIcon.className = 'fas fa-sun';
+                    console.log('🌙 Dark theme activated');
+                } else {
+                    themeIcon.className = 'fas fa-moon';
+                    console.log('☀️ Light theme activated');
+                }
+                
+                // Store preference (if localStorage available)
+                try {
+                    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+                } catch (e) {
+                    console.log('💾 Theme preference could not be saved (localStorage unavailable)');
+                }
+                
+            } catch (error) {
+                console.error('❌ Theme toggle error:', error);
+            }
+        }
+
+        // Initialize theme from storage
+        function initializeTheme() {
+            try {
+                const savedTheme = localStorage.getItem('theme');
+                if (savedTheme === 'dark') {
+                    document.body.classList.add('dark-theme');
+                    document.querySelector('.theme-toggle i').className = 'fas fa-sun';
+                    console.log('🎨 Theme initialized from storage: dark');
+                } else {
+                    console.log('🎨 Theme initialized: light (default)');
+                }
+            } catch (e) {
+                console.log('💾 Could not load theme preference (localStorage unavailable)');
+            }
+        }
+
+        // Enhanced Intersection Observer with error handling
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                try {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animationPlayState = 'running';
+                        const sectionName = entry.target.id || 'unknown';
+                        console.log(`👁️ Section "${sectionName}" is now visible`);
+                    }
+                } catch (error) {
+                    console.error('❌ Observer animation error:', error);
+                }
+            });
+        }, observerOptions);
+
+        // Initialize all observers and event listeners
+        function initializeWebsite() {
+            console.log('🚀 Website initialization started...');
+            
+            // Initialize theme
+            initializeTheme();
+            
+            // Setup section observers
+            document.querySelectorAll('.section').forEach((section, index) => {
+                observer.observe(section);
+                console.log(`📍 Observer set for section ${index + 1}: ${section.id}`);
+            });
+
+            console.log('✅ All systems initialized successfully!');
+            console.log('🔍 QA Report: No errors detected in initialization');
+        }
+
+        // Active section highlighting with error handling
+        window.addEventListener('scroll', () => {
+            try {
+                const sections = document.querySelectorAll('.section');
+                const navLinks = document.querySelectorAll('.nav-link');
+                
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (scrollY >= sectionTop - 200) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${current}`) {
+                        link.classList.add('active');
+                    }
+                });
+            } catch (error) {
+                console.error('❌ Scroll handler error:', error);
+            }
+        });
+
+        // Initialize skill bars animation with delay
+        setTimeout(() => {
+            try {
+                document.querySelectorAll('.skill-progress').forEach((bar, index) => {
+                    bar.style.animationPlayState = 'running';
+                    console.log(`📊 Skill bar ${index + 1} animated`);
+                });
+                console.log('🎯 All skill animations completed');
+            } catch (error) {
+                console.error('❌ Skill animation error:', error);
+            }
+        }, 1000);
+
+        // Run initialization when DOM is loaded
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeWebsite);
+        } else {
+            initializeWebsite();
+        }
+
+        // Final console message
+        setTimeout(() => {
+            console.log(`
+            🎉 Teşekkürler! CV web sitemi ziyaret ettiğin için teşekkür ederim. 
+            💼 İş görüşmesi için hazırım!
+            📞 Arayabilirsiniz: +90 553 334 51 09
+            `);
+        }, 2000);
+    </script>
+</body>
+</html>

@@ -49,6 +49,21 @@
     @apply truncate sm:whitespace-normal;
   }
 
+  /* Mobile responsive spacing */
+  .space-mobile {
+    @apply space-y-4 lg:space-y-6;
+  }
+
+  /* Mobile responsive padding */
+  .p-mobile {
+    @apply p-4 lg:p-6;
+  }
+
+  /* Mobile responsive grid gaps */
+  .gap-mobile {
+    @apply gap-4 lg:gap-6;
+  }
+
   /* Toast specific styles */
   .toast-container {
     position: fixed;
