@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../utils/AuthContext';
-import { User, Users, LogOut, Menu, X, Dumbbell, Bell, Home } from 'lucide-react';
+import { User, Users, LogOut, Menu, X, Dumbbell, Bell, Home, Calendar } from 'lucide-react';
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -16,6 +16,7 @@ const Navbar = () => {
 
   const navigation = [
     { name: 'Dashboard', href: '/dashboard', icon: Home },
+    { name: 'Ders Takibi', href: '/lessons', icon: Calendar },
     { name: 'Yeni Üye', href: '/clients/new', icon: Users },
     { name: 'Üye Listesi', href: '/clients/list', icon: Users },
     { name: 'Profil', href: '/profile', icon: User },

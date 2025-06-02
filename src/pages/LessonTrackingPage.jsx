@@ -11,7 +11,7 @@ import {
   updateLesson
 } from '../utils/lessonHelpers';
 import { getFromLocalStorage } from '../utils/helpers';
-import { loadDemoLessons } from '../utils/lessonGenerators';
+import { loadDemoLessons, addSingleLesson } from '../utils/lessonGenerators';
 
 // Components
 import LessonCalendar from '../components/lesson-tracking/LessonCalendar';
@@ -20,15 +20,15 @@ import QuickLessonForm from '../components/lesson-tracking/QuickLessonForm';
 import LessonCard from '../components/lesson-tracking/LessonCard';
 
 // Mobile components
-import { MobileHeader, FloatingActionButton, PullToRefresh } from '../components/mobile';
+import { MobileHeader, FloatingActionButton } from '../components/mobile';
 import useMobile from '../hooks/useMobile';
 
 // Icons
-import { Calendar, Clock, Users, Activity, TrendingUp, CheckCircle, Plus, UserPlus } from 'lucide-react';
+import { Calendar, Clock, Users, Activity, TrendingUp, CheckCircle, Plus, UserPlus, CalendarPlus, Eye } from 'lucide-react';
 
 const LessonTrackingPage = () => {
   const { currentPT } = useAuth();
-  const { showToast } = useToast();
+  const { toast } = useToast();
   const { isMobile } = useMobile();
   
   // State management
@@ -82,16 +82,16 @@ const LessonTrackingPage = () => {
     setShowQuickForm(false);
     setSelectedLesson(null);
     setRefreshTrigger(prev => prev + 1);
-    showToast('Ders başarıyla tamamlandı! 🎉', 'success');
+    toast.success('Ders başarıyla tamamlandı! 🎉');
   };
 
   const handleMarkNoShow = async (lessonId) => {
     try {
       markLessonNoShow(lessonId, 'Müşteri gelmedi');
       setRefreshTrigger(prev => prev + 1);
-      showToast('Ders "Gelmedi" olarak işaretlendi', 'warning');
+      toast.warning('Ders "Gelmedi" olarak işaretlendi');
     } catch (error) {
-      showToast('Bir hata oluştu', 'error');
+      toast.error('Bir hata oluştu');
     }
   };
 
@@ -99,9 +99,9 @@ const LessonTrackingPage = () => {
     try {
       cancelLesson(lessonId, 'İptal edildi');
       setRefreshTrigger(prev => prev + 1);
-      showToast('Ders iptal edildi', 'info');
+      toast.info('Ders iptal edildi');
     } catch (error) {
-      showToast('Bir hata oluştu', 'error');
+      toast.error('Bir hata oluştu');
     }
   };
 
@@ -109,14 +109,14 @@ const LessonTrackingPage = () => {
     setShowLessonModal(false);
     setSelectedLesson(null);
     setRefreshTrigger(prev => prev + 1);
-    showToast('Ders güncellendi', 'success');
+    toast.success('Ders güncellendi');
   };
 
   const handleLessonDelete = (lessonId) => {
     setShowLessonModal(false);
     setSelectedLesson(null);
     setRefreshTrigger(prev => prev + 1);
-    showToast('Ders silindi', 'info');
+    toast.info('Ders silindi');
   };
 
   const handleAddLesson = (selectedDate) => {
@@ -130,7 +130,7 @@ const LessonTrackingPage = () => {
     });
     
     if (availableClients.length === 0) {
-      showToast('Aktif müşteriniz yok. Önce bir müşteri ekleyin.', 'warning');
+      toast.warning('Aktif müşteriniz yok. Önce bir müşteri ekleyin.');
       return;
     }
     
@@ -148,13 +148,12 @@ const LessonTrackingPage = () => {
       };
       
       // addSingleLesson kullanarak ders ekle
-      const { addSingleLesson } = require('../utils/lessonGenerators');
       addSingleLesson(newLesson);
       
       setRefreshTrigger(prev => prev + 1);
-      showToast(`${firstClient.ad} ${firstClient.soyad} için ${dateStr || 'bugün'} tarihine ders eklendi`, 'success');
+      toast.success(`${firstClient.ad} ${firstClient.soyad} için ${dateStr || 'bugün'} tarihine ders eklendi`);
     } catch (error) {
-      showToast('Ders eklenirken bir hata oluştu', 'error');
+      toast.error('Ders eklenirken bir hata oluştu');
     }
   };
   
@@ -168,10 +167,10 @@ const LessonTrackingPage = () => {
   const handleRefresh = async () => {
     try {
       setRefreshTrigger(prev => prev + 1);
-      showToast('Ders verileri yenilendi! 🔄', 'success');
+      toast.success('Ders verileri yenilendi! 🔄');
       await new Promise(resolve => setTimeout(resolve, 500));
     } catch (error) {
-      showToast('Yenileme sırasında hata oluştu', 'error');
+      toast.error('Yenileme sırasında hata oluştu');
     }
   };
 
@@ -224,7 +223,7 @@ const LessonTrackingPage = () => {
   );
 
   return (
-    <PullToRefresh onRefresh={handleRefresh}>
+    <div>
       {/* Mobile Header */}
       <MobileHeader 
         title="Ders Takibi"
@@ -356,6 +355,7 @@ const LessonTrackingPage = () => {
               onLessonClick={handleLessonClick}
               onAddLesson={handleAddLesson}
               ptId={currentPT?.id}
+              isMobile={isMobile}
             />
           )}
 
@@ -371,11 +371,7 @@ const LessonTrackingPage = () => {
               </h2>
               
               {todaysLessons.length > 0 ? (
-                <div className={`grid gap-4 ${
-                  isMobile 
-                    ? 'grid-cols-1' 
-                    : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
-                }`}>
+                <div className="space-y-3">
                   {todaysLessons.map(lesson => (
                     <LessonCard
                       key={lesson.id}
@@ -385,6 +381,7 @@ const LessonTrackingPage = () => {
                       onComplete={handleQuickComplete}
                       onCancel={handleCancelLesson}
                       onMarkNoShow={handleMarkNoShow}
+                      compact={true}
                     />
                   ))}
                 </div>
@@ -451,25 +448,32 @@ const LessonTrackingPage = () => {
         <FloatingActionButton
           actions={[
             {
-              icon: Plus,
+              icon: CalendarPlus,
               label: 'Ders Ekle',
-              color: 'bg-blue-500',
-              textColor: 'text-white',
+              color: 'bg-blue-100',
+              textColor: 'text-blue-600',
               onClick: () => handleAddLesson()
             },
             {
-              icon: Calendar,
-              label: 'Takvim',
-              color: 'bg-purple-500',
-              textColor: 'text-white',
+              icon: Eye,
+              label: 'Takvim Görünümü',
+              color: 'bg-purple-100',
+              textColor: 'text-purple-600',
               onClick: () => setView('calendar')
             },
             {
               icon: Clock,
-              label: 'Bugün',
-              color: 'bg-green-500',
-              textColor: 'text-white',
+              label: 'Bugünkü Dersler',
+              color: 'bg-green-100',
+              textColor: 'text-green-600',
               onClick: () => setView('today')
+            },
+            {
+              icon: TrendingUp,
+              label: 'Yaklaşan Dersler',
+              color: 'bg-orange-100',
+              textColor: 'text-orange-600',
+              onClick: () => setView('upcoming')
             }
           ]}
         />
@@ -497,7 +501,7 @@ const LessonTrackingPage = () => {
           }}
         />
       </div>
-    </PullToRefresh>
+    </div>
   );
 };
 

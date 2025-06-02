@@ -25,30 +25,24 @@ if (typeof window !== 'undefined') {
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', async () => {
     try {
-      const registration = await navigator.serviceWorker.register('/sw.js', {
-        scope: '/'
-      });
+      // Vite PWA plugin kendi service worker'ını register eder
+      // Sadece manuel register etmemiz gereken durumlar için
       
-      console.log('✅ Service Worker registered successfully:', registration.scope);
-      
-      // Update found
-      registration.addEventListener('updatefound', () => {
-        console.log('🔄 Service Worker update found');
-        const newWorker = registration.installing;
-        
-        newWorker?.addEventListener('statechange', () => {
-          if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-            console.log('✨ New content available, refresh to update');
-            // Burada kullanıcıya update notification gösterilebilir
-            if ('Notification' in window && Notification.permission === 'granted') {
-              new Notification('YourTrainer güncellemesi mevcut!', {
-                body: 'Yeni özellikler için sayfayı yenileyin.',
-                icon: '/logo.svg'
-              });
-            }
+      // Service Worker mesaj dinleme
+      navigator.serviceWorker.addEventListener('message', (event) => {
+        if (event.data && event.data.type === 'SW_UPDATE_AVAILABLE') {
+          // Yeni versiyon mevcut, kullanıcıya bildir
+          if ('Notification' in window && Notification.permission === 'granted') {
+            new Notification('YourTrainer güncellemesi mevcut!', {
+              body: 'Yeni özellikler için sayfayı yenileyin.',
+              icon: '/logo.svg',
+              tag: 'app-update'
+            });
           }
-        });
+        }
       });
+      
+      console.log('✅ PWA Service Worker ready');
       
     } catch (error) {
       console.error('❌ Service Worker registration failed:', error);

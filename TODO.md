@@ -104,7 +104,10 @@
 
 ### 🔄 Sonraki Özellikler (v1.5)
 - [ ] Form dirty state kontrolü
-- [ ] Ders takip sistemi
+- [x] ✅ **Ders takip sistemi - Takvim görünümü** 🎉
+- [ ] Ders tamamlama/işaretleme (QuickLessonForm ile mevcut)
+- [ ] Devamsızlık takibi (temel seviyede mevcut)
+- [ ] Ders programı yönetimi (temel seviyede mevcut)
 - [ ] Gelişmiş istatistikler ve grafikler
 - [ ] Müşteri arama geçmişi
 - [ ] Çoklu müşteri seçimi ve işlemler

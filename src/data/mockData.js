@@ -1,12 +1,14 @@
+import { IMAGES } from '../assets/index.js';
+
 // Mock PT (Personal Trainer) verileri
 export const mockPTData = {
   id: 1,
-  kullanici_adi: "faruktastan",
-  ad: "Faruk",
+  kullanici_adi: "mucahit.tastan", // Kullanıcı adı, giriş için kullanılacak
+  ad: "Mücahit",
   soyad: "Taştan",
   uzmanlik_alani: "Fonksiyonel Antrenman, Kilo Verme, Postür Düzeltme",
-  yas: 26,
-  profil_resmi_url: "/profile-placeholder.jpg",
+  yas: 28,
+  profil_resmi_url: IMAGES.PROFILE_MUCAHIT,
   ders_basina_ucret: 850, // TL
   kayit_tarihi: "2024-01-15",
   aktif_mi: true

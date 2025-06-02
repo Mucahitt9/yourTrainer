@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Plus, X } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+import { Plus, X, Zap } from 'lucide-react';
 import useMobile from '../../hooks/useMobile';
 
 const FloatingActionButton = ({ 
@@ -9,118 +9,151 @@ const FloatingActionButton = ({
   disabled = false,
   className = '' 
 }) => {
+  // ✅ ALL HOOKS FIRST - Before any conditional returns
   const { isMobile } = useMobile();
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const fabRef = useRef(null);
 
-  // Don't show on desktop
-  if (!isMobile) {
+  // Close on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      if (isExpanded) {
+        setIsExpanded(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [isExpanded]);
+
+  // ✅ CONDITIONAL RETURNS AFTER ALL HOOKS
+  // Don't show on desktop or when no actions
+  if (!isMobile || actions.length === 0) {
     return null;
   }
 
   const handleMainClick = () => {
-    if (actions.length > 0) {
-      setIsExpanded(!isExpanded);
-    } else if (mainAction) {
-      mainAction();
-    }
+    if (isAnimating) return;
+    
+    setIsAnimating(true);
+    setIsExpanded(!isExpanded);
+    
+    setTimeout(() => {
+      setIsAnimating(false);
+    }, 300);
   };
 
   const handleActionClick = (action) => {
-    action.onClick();
+    if (isAnimating) return;
+    
+    setIsExpanded(false);
+    setTimeout(() => {
+      action.onClick();
+    }, 150);
+  };
+
+  const handleBackdropClick = () => {
     setIsExpanded(false);
   };
-
-  const positionClasses = {
-    'bottom-right': 'bottom-6 right-6',
-    'bottom-left': 'bottom-6 left-6',
-    'top-right': 'top-6 right-6',
-    'top-left': 'top-6 left-6'
-  };
-
-  // Adjust bottom position to account for mobile bottom nav
-  const mobileBottomOffset = 'bottom-24'; // Above bottom navigation
 
   return (
     <>
       {/* Backdrop */}
       {isExpanded && (
         <div 
-          className="fixed inset-0 bg-black bg-opacity-25 z-40 transition-opacity duration-300"
-          onClick={() => setIsExpanded(false)}
+          className="fixed inset-0 bg-black bg-opacity-30 z-40 transition-opacity duration-300 backdrop-blur-sm"
+          onClick={handleBackdropClick}
         />
       )}
 
       {/* FAB Container */}
-      <div className={`fixed ${position.includes('bottom') ? mobileBottomOffset : positionClasses[position]} right-6 z-50 ${className}`}>
-        {/* Action Buttons */}
-        {actions.length > 0 && (
-          <div className="flex flex-col-reverse space-y-reverse space-y-3 mb-3">
+      <div 
+        ref={fabRef}
+        className={`fixed bottom-24 right-6 z-50 ${className}`}
+      >
+        {/* Action Menu */}
+        <div className={`absolute bottom-16 right-0 transform transition-all duration-300 origin-bottom-right ${
+          isExpanded ? 'scale-100 opacity-100' : 'scale-95 opacity-0 pointer-events-none'
+        }`}>
+          <div className="bg-white rounded-2xl shadow-2xl border border-gray-200 p-2 min-w-[200px]">
             {actions.map((action, index) => {
               const Icon = action.icon;
               return (
                 <button
                   key={index}
                   onClick={() => handleActionClick(action)}
-                  disabled={disabled}
+                  disabled={disabled || isAnimating}
                   className={`
-                    transform transition-all duration-300 ease-out
-                    ${isExpanded 
-                      ? 'scale-100 opacity-100 translate-y-0' 
-                      : 'scale-0 opacity-0 translate-y-4'
-                    }
-                    w-12 h-12 rounded-full shadow-lg flex items-center justify-center
-                    ${action.color || 'bg-white'} ${action.textColor || 'text-gray-700'}
-                    hover:shadow-xl active:scale-95 touch-manipulation
+                    w-full flex items-center space-x-3 p-3 rounded-xl transition-all duration-200
+                    hover:bg-gray-50 active:bg-gray-100 touch-manipulation
+                    transform hover:scale-105 active:scale-95
                     disabled:opacity-50 disabled:cursor-not-allowed
+                    ${isExpanded ? 'animate-slide-up' : ''}
                   `}
                   style={{ 
-                    transitionDelay: isExpanded ? `${index * 50}ms` : '0ms'
+                    animationDelay: `${index * 50}ms`,
+                    animationFillMode: 'both'
                   }}
-                  title={action.label}
                 >
-                  <Icon className="h-5 w-5" />
+                  <div className={`
+                    w-10 h-10 rounded-full flex items-center justify-center
+                    ${action.color || 'bg-primary-100'} ${action.textColor || 'text-primary-600'}
+                  `}>
+                    <Icon className="h-5 w-5" />
+                  </div>
+                  <span className="font-medium text-gray-900 text-sm">
+                    {action.label}
+                  </span>
                 </button>
               );
             })}
           </div>
-        )}
+        </div>
 
-        {/* Main FAB */}
+        {/* Main FAB Button */}
         <button
           onClick={handleMainClick}
-          disabled={disabled}
+          disabled={disabled || isAnimating}
           className={`
-            btn-fab group
-            ${isExpanded ? 'rotate-45' : 'rotate-0'}
+            btn-fab group relative overflow-hidden
+            ${isExpanded ? 'scale-110 shadow-2xl' : 'scale-100'}
+            ${isAnimating ? 'pointer-events-none' : ''}
             disabled:opacity-50 disabled:cursor-not-allowed
-            active:scale-95
           `}
         >
-          {actions.length > 0 ? (
-            <>
-              <Plus className={`h-6 w-6 transition-transform duration-300 ${
-                isExpanded ? 'rotate-45' : 'rotate-0'
-              }`} />
-              {isExpanded && (
-                <X className="h-6 w-6 absolute transition-opacity duration-300 opacity-0 group-hover:opacity-100" />
-              )}
-            </>
-          ) : (
-            <>  
-              {mainAction?.icon ? (
-                <mainAction.icon className="h-6 w-6" />
-              ) : (
-                <Plus className="h-6 w-6" />
-              )}
-            </>
+          {/* Background Gradient */}
+          <div className={`
+            absolute inset-0 bg-gradient-to-r from-primary-500 to-primary-600 
+            transition-all duration-300 ${isExpanded ? 'scale-110' : 'scale-100'}
+          `} />
+          
+          {/* Icon Container */}
+          <div className="relative z-10 flex items-center justify-center">
+            <Plus className={`
+              h-6 w-6 transition-all duration-300 transform
+              ${isExpanded ? 'rotate-45 scale-110' : 'rotate-0 scale-100'}
+            `} />
+          </div>
+
+          {/* Ripple Effect */}
+          <div className={`
+            absolute inset-0 bg-white bg-opacity-20 rounded-full transform
+            transition-all duration-300 ${isExpanded ? 'scale-150 opacity-0' : 'scale-0 opacity-100'}
+          `} />
+
+          {/* Pulse Animation */}
+          {!isExpanded && (
+            <div className="absolute inset-0 rounded-full bg-primary-400 animate-ping opacity-75" />
           )}
         </button>
 
-        {/* Label */}
-        {(mainAction?.label || (actions.length > 0 && !isExpanded)) && (
-          <div className="absolute bottom-full right-0 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-            <div className="bg-gray-800 text-white text-xs px-2 py-1 rounded whitespace-nowrap">
-              {mainAction?.label || 'Seçenekler'}
+        {/* Quick Label (appears on first load) */}
+        {!isExpanded && (
+          <div className="absolute bottom-full right-0 mb-3 opacity-0 group-hover:opacity-100 transition-all duration-200 pointer-events-none">
+            <div className="bg-gray-900 text-white text-xs px-3 py-2 rounded-lg whitespace-nowrap shadow-lg">
+              Hızlı İşlemler
+              <div className="absolute top-full right-4 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900" />
             </div>
           </div>
         )}

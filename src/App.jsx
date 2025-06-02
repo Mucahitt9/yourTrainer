@@ -4,6 +4,7 @@ import { AuthProvider, useAuth } from './utils/AuthContext';
 import { ToastProvider } from './utils/ToastContext';
 import ErrorBoundary from './components/error/ErrorBoundary';
 import PWAInstallPrompt from './components/PWAInstallPrompt';
+import NetworkStatusIndicator from './components/NetworkStatusIndicator';
 import LoginPage from './pages/LoginPage';
 import Layout from './components/Layout';
 import LoadingSpinner from './components/LoadingSpinner';
@@ -14,6 +15,7 @@ const ClientsPage = lazy(() => import('./pages/ClientsPage'));
 const ClientListPage = lazy(() => import('./pages/ClientListPage'));
 const ClientDetailPage = lazy(() => import('./pages/ClientDetailPage'));
 const ClientEditPage = lazy(() => import('./pages/ClientEditPage'));
+const LessonTrackingPage = lazy(() => import('./pages/LessonTrackingPage'));
 const ProfilePage = lazy(() => import('./pages/ProfilePage'));
 const ToastDemoPage = lazy(() => import('./pages/ToastDemoPage'));
 
@@ -38,6 +40,9 @@ const AppContent = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Network Status Indicator - Her zaman görünür */}
+      <NetworkStatusIndicator />
+      
       {/* PWA Install Prompt - sadece login olduktan sonra göster */}
       {isAuthenticated && <PWAInstallPrompt />}
       
@@ -58,6 +63,7 @@ const AppContent = () => {
         >
           <Route index element={<Navigate to="/dashboard" replace />} />
           <Route path="dashboard" element={<DashboardPage />} />
+          <Route path="lessons" element={<LessonTrackingPage />} />
           <Route path="clients">
             <Route path="new" element={<ClientsPage />} />
             <Route path="list" element={<ClientListPage />} />

@@ -463,7 +463,7 @@ const LessonModal = ({
                   <div className="space-y-2 text-sm">
                     <p><span className="text-gray-600">Yaş:</span> {client.yas}</p>
                     <p><span className="text-gray-600">Toplam Ders:</span> {client.alinan_ders_sayisi}</p>
-                    <p><span className="text-gray-600">Kayıt Tarihi:</span> {formatLessonDate(client.kayit_tarihi)}</p>
+                    <p><span className="text-gray-600">Kayıt Tarihi:</span> {client.kayit_tarihi ? formatLessonDate(client.kayit_tarihi) : '-'}</p>
                   </div>
                 </div>
               )}

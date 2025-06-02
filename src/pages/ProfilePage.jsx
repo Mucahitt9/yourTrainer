@@ -3,6 +3,7 @@ import { useAuth } from '../utils/AuthContext';
 import { useToast } from '../utils/ToastContext';
 import { User, Edit3, Save, X, Calendar, Award, DollarSign } from 'lucide-react';
 import { formatDate, generateUsername } from '../utils/helpers';
+import { IMAGES } from '../assets';
 import ProfilePhotoUpload from '../components/ProfilePhotoUpload';
 import ProfileFormField from '../components/form/ProfileFormField';
 
@@ -17,7 +18,7 @@ const ProfilePage = () => {
     ders_basina_ucret: currentPT?.ders_basina_ucret || 200,
     uzmanlik_alani: currentPT?.uzmanlik_alani || '',
     yas: currentPT?.yas || '',
-    profil_resmi_url: currentPT?.profil_resmi_url || ''
+    profil_resmi_url: IMAGES.PROFILE_MUCAHIT
   });
   const [loading, setLoading] = useState(false);
 
@@ -104,7 +105,7 @@ const ProfilePage = () => {
       ders_basina_ucret: currentPT?.ders_basina_ucret || 200,
       uzmanlik_alani: currentPT?.uzmanlik_alani || '',
       yas: currentPT?.yas || '',
-      profil_resmi_url: currentPT?.profil_resmi_url || ''
+      profil_resmi_url: IMAGES.PROFILE_MUCAHIT
     });
     setIsEditing(false);
   };
@@ -177,7 +178,7 @@ const ProfilePage = () => {
               {/* Profil Fotoğrafı Upload */}
               <div className="mb-4">
                 <ProfilePhotoUpload
-                  currentPhoto={isEditing ? editData.profil_resmi_url : currentPT?.profil_resmi_url}
+                  currentPhoto={IMAGES.PROFILE_MUCAHIT}
                   onPhotoChange={handlePhotoChange}
                   disabled={!isEditing}
                   theme="profile"

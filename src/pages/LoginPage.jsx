@@ -150,7 +150,7 @@ const LoginPage = () => {
           <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
             <h3 className="text-sm font-medium text-blue-800 mb-2">Demo Giriş Bilgileri:</h3>
             <div className="text-sm text-blue-700 space-y-1">
-              <p><strong>Kullanıcı Adı:</strong> faruktastan</p>
+              <p><strong>Kullanıcı Adı:</strong> faru</p>
               <p><strong>Şifre:</strong>pt123</p>
             </div>
           </div>
