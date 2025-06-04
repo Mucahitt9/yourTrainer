@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../utils/AuthContext';
-import { Dumbbell, Eye, EyeOff, User, Lock } from 'lucide-react';
+import { Dumbbell, Eye, EyeOff, User, Lock, Info } from 'lucide-react';
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
@@ -11,6 +11,7 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [showDemoInfo, setShowDemoInfo] = useState(false);
 
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -44,6 +45,9 @@ const LoginPage = () => {
       setLoading(false);
     }
   };
+
+  // Demo bilgilerini sadece development'ta göster
+  const isDevelopment = import.meta.env.DEV;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-50 to-gray-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -83,6 +87,7 @@ const LoginPage = () => {
                   className="input-field pl-10"
                   placeholder="Kullanıcı adınızı girin"
                   disabled={loading}
+                  autoComplete="username"
                 />
               </div>
             </div>
@@ -106,12 +111,14 @@ const LoginPage = () => {
                   className="input-field pl-10 pr-10"
                   placeholder="Şifrenizi girin"
                   disabled={loading}
+                  autoComplete="current-password"
                 />
                 <button
                   type="button"
                   className="absolute inset-y-0 right-0 pr-3 flex items-center"
                   onClick={() => setShowPassword(!showPassword)}
                   disabled={loading}
+                  aria-label={showPassword ? 'Şifreyi gizle' : 'Şifreyi göster'}
                 >
                   {showPassword ? (
                     <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-600" />
@@ -146,24 +153,45 @@ const LoginPage = () => {
             </button>
           </form>
 
-          {/* Demo Bilgileri */}
-          <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
-            <h3 className="text-sm font-medium text-blue-800 mb-2">Demo Giriş Bilgileri:</h3>
-            <div className="text-sm text-blue-700 space-y-1">
-              <p><strong>Kullanıcı Adı:</strong> faru</p>
-              <p><strong>Şifre:</strong>pt123</p>
+          {/* Demo Bilgileri - Sadece Development */}
+          {isDevelopment && (
+            <div className="mt-6">
+              <button
+                type="button"
+                onClick={() => setShowDemoInfo(!showDemoInfo)}
+                className="flex items-center gap-2 text-sm text-blue-600 hover:text-blue-800"
+              >
+                <Info className="h-4 w-4" />
+                Demo Bilgileri
+              </button>
+              
+              {showDemoInfo && (
+                <div className="mt-3 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                  <h3 className="text-sm font-medium text-blue-800 mb-2">Development Demo:</h3>
+                  <div className="text-sm text-blue-700 space-y-1">
+                    <p><strong>Kullanıcı Adı:</strong>mucahit.tastan</p>
+                    <p><strong>Şifre:</strong>müco123</p>
+                    <p className="text-xs text-blue-600 mt-2">
+                      * Bu bilgiler sadece geliştirme ortamında görünür
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Güvenlik Bildirimi */}
+          <div className="mt-6 p-3 bg-green-50 rounded-lg border border-green-200">
+            <div className="flex items-start gap-2">
+              <Lock className="h-4 w-4 text-green-600 mt-0.5 flex-shrink-0" />
+              <p className="text-xs text-green-700">
+                Giriş bilgileriniz güvenli şekilde şifrelenerek korunmaktadır.
+              </p>
             </div>
           </div>
         </div>
 
         {/* Footer */}
-        {/* <div className="logo-font text-xl text-white bg-black flex items-center justify-center gap-2 py-4 mt-8 rounded-lg">
-  <span className="text-purple-500 text-2xl">{'{'}</span>
-  <span className="font-bold">CONSOLE</span>
-  <div className="w-4 h-4 bg-purple-600 rounded-full"></div>
-  <span className="font-bold">TECH</span>
-  <span className="text-purple-500 text-2xl">{'}'}</span>
-</div> */}
         <div className="text-center text-sm text-gray-500 mt-4">
           &copy; {new Date().getFullYear()} YourTrainer. Tüm hakları saklıdır.
         </div>

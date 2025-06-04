@@ -18,13 +18,14 @@ import LessonCalendar from '../components/lesson-tracking/LessonCalendar';
 import LessonModal from '../components/lesson-tracking/LessonModal';
 import QuickLessonForm from '../components/lesson-tracking/QuickLessonForm';
 import LessonCard from '../components/lesson-tracking/LessonCard';
+import WhatsAppModal from '../components/whatsapp/WhatsAppModal';
 
 // Mobile components
 import { MobileHeader, FloatingActionButton } from '../components/mobile';
 import useMobile from '../hooks/useMobile';
 
 // Icons
-import { Calendar, Clock, Users, Activity, TrendingUp, CheckCircle, Plus, UserPlus, CalendarPlus, Eye } from 'lucide-react';
+import { Calendar, Clock, Users, Activity, TrendingUp, CheckCircle, Plus, UserPlus, CalendarPlus, Eye, MessageCircle } from 'lucide-react';
 
 const LessonTrackingPage = () => {
   const { currentPT } = useAuth();
@@ -35,6 +36,9 @@ const LessonTrackingPage = () => {
   const [selectedLesson, setSelectedLesson] = useState(null);
   const [showLessonModal, setShowLessonModal] = useState(false);
   const [showQuickForm, setShowQuickForm] = useState(false);
+  const [showWhatsAppModal, setShowWhatsAppModal] = useState(false);
+  const [whatsAppSelectedClient, setWhatsAppSelectedClient] = useState(null);
+  const [whatsAppSelectedDate, setWhatsAppSelectedDate] = useState(null);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
   const [view, setView] = useState('calendar'); // 'calendar', 'today', 'upcoming'
 
@@ -172,6 +176,19 @@ const LessonTrackingPage = () => {
     } catch (error) {
       toast.error('Yenileme sırasında hata oluştu');
     }
+  };
+
+  // WhatsApp modal handlers
+  const handleOpenWhatsApp = (client = null, date = null) => {
+    setWhatsAppSelectedClient(client);
+    setWhatsAppSelectedDate(date);
+    setShowWhatsAppModal(true);
+  };
+
+  const handleCloseWhatsApp = () => {
+    setShowWhatsAppModal(false);
+    setWhatsAppSelectedClient(null);
+    setWhatsAppSelectedDate(null);
   };
 
   // Stats calculations
@@ -444,9 +461,29 @@ const LessonTrackingPage = () => {
           )}
         </div>
 
+        {/* WhatsApp Program Share Button - Desktop */}
+        {!isMobile && (
+          <div className="fixed bottom-6 right-6 z-40">
+            <button
+              onClick={() => handleOpenWhatsApp()}
+              className="bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 group"
+              title="WhatsApp ile Program Gönder"
+            >
+              <MessageCircle className="h-6 w-6 group-hover:scale-110 transition-transform" />
+            </button>
+          </div>
+        )}
+
         {/* Floating Action Button for Mobile */}
         <FloatingActionButton
           actions={[
+            {
+              icon: MessageCircle,
+              label: 'WP Program İlet',
+              color: 'bg-green-100',
+              textColor: 'text-green-600',
+              onClick: () => handleOpenWhatsApp()
+            },
             {
               icon: CalendarPlus,
               label: 'Ders Ekle',
@@ -499,6 +536,14 @@ const LessonTrackingPage = () => {
             setShowQuickForm(false);
             setSelectedLesson(null);
           }}
+        />
+
+        {/* WhatsApp Modal */}
+        <WhatsAppModal
+          isOpen={showWhatsAppModal}
+          onClose={handleCloseWhatsApp}
+          selectedClient={whatsAppSelectedClient}
+          selectedDate={whatsAppSelectedDate}
         />
       </div>
     </div>

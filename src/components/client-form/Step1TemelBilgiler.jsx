@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, memo } from 'react';
-import { Calendar, DollarSign, Clock, Users, User, Calculator } from 'lucide-react';
+import { Calendar, DollarSign, Clock, Users, User, Calculator, Phone } from 'lucide-react';
 import { hesaplaTahminiBitisTarihi, hesaplaToplamUcret, formatDate } from '../../utils/helpers';
 import FormField from '../form/FormField';
 import DaySelector from '../form/DaySelector';
@@ -128,7 +128,7 @@ const Step1TemelBilgiler = memo(({ formData, updateFormData, errors, setErrors }
         />
       </div>
 
-      {/* Yaş ve Ders Sayısı */}
+      {/* Yaş ve Telefon */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <FormField
           label="Üye Yaşı"
@@ -144,6 +144,21 @@ const Step1TemelBilgiler = memo(({ formData, updateFormData, errors, setErrors }
           helpText="14-80 yaş arası"
         />
 
+        <FormField
+          label="Telefon Numarası"
+          name="telefon"
+          type="tel"
+          value={formData.telefon}
+          onChange={handleInputChange}
+          error={errors.telefon}
+          placeholder="905551234567"
+          icon={Phone}
+          helpText="WhatsApp için gerekli"
+        />
+      </div>
+
+      {/* Ders Sayısı */}
+      <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
         <FormField
           label="Alınan Ders Sayısı"
           name="alinan_ders_sayisi"

@@ -1,7 +1,7 @@
 {
   "name": "yourtrainer-pt-system",
-  "version": "1.4.0",
-  "description": "Personal Trainer Üye Kayıt Sistemi",
+  "version": "1.4.2",
+  "description": "Personal Trainer Üye Kayıt Sistemi - Ultra Güvenli DevTools Korumalı",
   "main": "index.js",
   "scripts": {
     "dev": "vite",
@@ -10,9 +10,15 @@
     "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "analyze": "vite build --mode analyze",
     "build:prod": "vite build --mode production && npm run analyze-bundle",
-    "analyze-bundle": "npx vite-bundle-analyzer dist"
+    "analyze-bundle": "npx vite-bundle-analyzer dist",
+    "security:check": "npm audit && echo '✅ NPM Security audit completed'",
+    "security:scan": "echo '🔍 Scanning for sensitive data...' && grep -r --include='*.js' --include='*.jsx' --exclude-dir=node_modules 'console.log\\|password\\|admin123\\|pt123' . || echo '✅ No security issues found'",
+    "security:test": "node tests/security.test.js",
+    "security:full": "npm run security:check && npm run security:scan && echo '🔒 Full security check completed'",
+    "build:secure": "npm run security:full && npm run build:prod && echo '🚀 Secure build completed'",
+    "devtools:check": "echo '🕵️ Checking DevTools security...' && npm run security:scan"
   },
-  "keywords": ["personal-trainer", "client-management", "fitness"],
+  "keywords": ["personal-trainer", "client-management", "fitness", "secure", "encrypted", "devtools-protected"],
   "author": "YourTrainer Team",
   "license": "MIT",
   "dependencies": {

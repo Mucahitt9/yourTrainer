@@ -84,6 +84,16 @@ export const validateMusteriForm = (formData) => {
     errors.haftalik_ders_gunleri = 'En az bir ders günü seçilmeli';
   }
 
+  // Telefon numarası validasyonu (opsiyonel ama eğer girilmişse geçerli olmalı)
+  if (formData.telefon && formData.telefon.trim()) {
+    const phoneRegex = /^[0-9+\-\s()]{10,}$/;
+    const cleanPhone = formData.telefon.replace(/\D/g, '');
+    
+    if (!phoneRegex.test(formData.telefon) || cleanPhone.length < 10) {
+      errors.telefon = 'Geçerli bir telefon numarası girin (min 10 haneli)';
+    }
+  }
+
   // Adım 2 validasyonları
   if (formData.vucut_olculeri) {
     const { boy, kilo } = formData.vucut_olculeri;

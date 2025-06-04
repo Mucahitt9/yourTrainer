@@ -1,6 +1,14 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { mockPTData } from '../data/mockData';
 import { getFromLocalStorage, saveToLocalStorage } from './helpers';
+import { 
+  validateLoginCredentials, 
+  createSecureSession, 
+  sanitizeDataForStorage, 
+  secureLog, 
+  validateSession,
+  initSecurity 
+} from './security';
 
 const AuthContext = createContext();
 
@@ -17,57 +25,99 @@ export const AuthProvider = ({ children }) => {
   const [currentPT, setCurrentPT] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Sayfa yüklendiğinde local storage'dan session kontrolü
+  // Security initialization
+  useEffect(() => {
+    initSecurity();
+  }, []);
+
+  // Sayfa yüklendiğinde session kontrolü
   useEffect(() => {
     const savedSession = getFromLocalStorage('pt_session');
+    
     if (savedSession && savedSession.isAuthenticated) {
-      setIsAuthenticated(true);
-      setCurrentPT(savedSession.ptData);
+      // Session validation
+      if (validateSession(savedSession)) {
+        setIsAuthenticated(true);
+        setCurrentPT(savedSession.ptData);
+        secureLog('Session restored successfully');
+      } else {
+        secureLog('Session expired, clearing data');
+        localStorage.removeItem('pt_session');
+      }
     }
     setLoading(false);
   }, []);
 
-  // Login fonksiyonu
+  // GÜVENLİ LOGIN - DevTools'da şifre görünmez
   const login = async (kullaniciAdi, sifre) => {
-    // Mock authentication - gerçek uygulamada API call olacak
-    if (kullaniciAdi === mockPTData.kullanici_adi && sifre === 'pt123') {
-      const sessionData = {
-        isAuthenticated: true,
-        ptData: mockPTData,
-        loginTime: new Date().toISOString()
-      };
+    try {
+      // Rate limiting simulation
+      await new Promise(resolve => setTimeout(resolve, 500));
       
-      setIsAuthenticated(true);
-      setCurrentPT(mockPTData);
-      saveToLocalStorage('pt_session', sessionData);
-      
-      return { success: true };
-    } else {
-      return { 
-        success: false, 
-        error: 'Kullanıcı adı veya şifre hatalı' 
+      // Gizli validation - DevTools'da hash'ler görünmez
+      if (validateLoginCredentials(kullaniciAdi, sifre)) {
+        // Secure session creation
+        const secureSession = createSecureSession(mockPTData);
+        
+        const sessionData = {
+          isAuthenticated: true,
+          ptData: sanitizeDataForStorage(mockPTData),
+          loginTime: new Date().toISOString(),
+          ...secureSession
+        };
+        
+        setIsAuthenticated(true);
+        setCurrentPT(mockPTData);
+        saveToLocalStorage('pt_session', sessionData);
+        
+        secureLog('Login successful');
+        return { success: true };
+      } else {
+        secureLog('Login failed - invalid credentials');
+        return { 
+          success: false, 
+          error: 'Kullanıcı adı veya şifre hatalı' 
+        };
+      }
+    } catch (error) {
+      secureLog('Login error:', error.message);
+      return {
+        success: false,
+        error: 'Giriş sırasında bir hata oluştu'
       };
     }
   };
 
-  // Logout fonksiyonu
+  // Güvenli logout
   const logout = () => {
     setIsAuthenticated(false);
     setCurrentPT(null);
     localStorage.removeItem('pt_session');
+    secureLog('User logged out successfully');
   };
 
-  // PT profil güncelleme
+  // PT profil güncelleme - Güvenli
   const updatePTProfile = (updatedData) => {
-    const newPTData = { ...currentPT, ...updatedData };
+    // Hassas alanları filtrele
+    const safeData = sanitizeDataForStorage(updatedData);
+    delete safeData.id; // ID değiştirilemez
+    
+    const newPTData = { ...currentPT, ...safeData };
     setCurrentPT(newPTData);
     
-    // Session'ı güncelle
+    // Session'ı güvenli şekilde güncelle
     const currentSession = getFromLocalStorage('pt_session');
-    if (currentSession) {
-      currentSession.ptData = newPTData;
-      saveToLocalStorage('pt_session', currentSession);
+    if (currentSession && validateSession(currentSession)) {
+      const secureSession = createSecureSession(newPTData);
+      const updatedSession = {
+        ...currentSession,
+        ptData: sanitizeDataForStorage(newPTData),
+        ...secureSession
+      };
+      saveToLocalStorage('pt_session', updatedSession);
     }
+    
+    secureLog('PT profile updated successfully');
   };
 
   const value = {
