@@ -31,7 +31,7 @@ const Navbar = () => {
         <div className="flex justify-between h-16">
           {/* Logo ve Ana Navigasyon */}
           <div className="flex items-center">
-            <Link to="/clients" className="flex items-center space-x-2">
+            <Link to="/dashboard" className="flex items-center space-x-2">
               <Dumbbell className="h-8 w-8 text-primary-600" />
               <span className="text-xl font-bold text-gray-900">YourTrainer</span>
             </Link>

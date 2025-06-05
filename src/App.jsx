@@ -47,33 +47,83 @@ const AppContent = () => {
       {isAuthenticated && <PWAInstallPrompt />}
       
       <Routes>
+        {/* Ana sayfa - login durumuna göre yönlendirme */}
+        <Route 
+          path="/" 
+          element={
+            isAuthenticated ? <Navigate to="/dashboard" replace /> : <Navigate to="/login" replace />
+          } 
+        />
+        
+        {/* Login sayfası */}
         <Route 
           path="/login" 
           element={
             isAuthenticated ? <Navigate to="/dashboard" replace /> : <LoginPage />
           } 
         />
+        
+        {/* Korumalı sayfalar */}
         <Route 
-          path="/" 
+          path="/dashboard" 
           element={
             <ProtectedRoute>
               <Layout />
             </ProtectedRoute>
           }
         >
-          <Route index element={<Navigate to="/dashboard" replace />} />
-          <Route path="dashboard" element={<DashboardPage />} />
-          <Route path="lessons" element={<LessonTrackingPage />} />
-          <Route path="clients">
-            <Route path="new" element={<ClientsPage />} />
-            <Route path="list" element={<ClientListPage />} />
-            <Route path=":id" element={<ClientDetailPage />} />
-            <Route path=":id/edit" element={<ClientEditPage />} />
-            <Route index element={<Navigate to="new" replace />} />
-          </Route>
-          <Route path="profile" element={<ProfilePage />} />
-          <Route path="toast-demo" element={<ToastDemoPage />} />
+          <Route index element={<DashboardPage />} />
         </Route>
+        
+        <Route 
+          path="/lessons" 
+          element={
+            <ProtectedRoute>
+              <Layout />
+            </ProtectedRoute>
+          }
+        >
+          <Route index element={<LessonTrackingPage />} />
+        </Route>
+        
+        <Route 
+          path="/clients" 
+          element={
+            <ProtectedRoute>
+              <Layout />
+            </ProtectedRoute>
+          }
+        >
+          <Route path="new" element={<ClientsPage />} />
+          <Route path="list" element={<ClientListPage />} />
+          <Route path=":id" element={<ClientDetailPage />} />
+          <Route path=":id/edit" element={<ClientEditPage />} />
+          <Route index element={<Navigate to="new" replace />} />
+        </Route>
+        
+        <Route 
+          path="/profile" 
+          element={
+            <ProtectedRoute>
+              <Layout />
+            </ProtectedRoute>
+          }
+        >
+          <Route index element={<ProfilePage />} />
+        </Route>
+        
+        <Route 
+          path="/toast-demo" 
+          element={
+            <ProtectedRoute>
+              <Layout />
+            </ProtectedRoute>
+          }
+        >
+          <Route index element={<ToastDemoPage />} />
+        </Route>
+        
+        {/* 404 - tüm diğer route'lar */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </div>

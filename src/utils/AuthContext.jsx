@@ -32,24 +32,42 @@ export const AuthProvider = ({ children }) => {
 
   // Sayfa yüklendiğinde session kontrolü
   useEffect(() => {
-    const savedSession = getFromLocalStorage('pt_session');
+    // Önce localStorage, sonra sessionStorage kontrol et
+    let savedSession = getFromLocalStorage('pt_session');
+    let isRemembered = false;
+    
+    if (!savedSession) {
+      // LocalStorage'da yoksa sessionStorage'a bak
+      const sessionData = sessionStorage.getItem('pt_session');
+      if (sessionData) {
+        try {
+          savedSession = JSON.parse(sessionData);
+        } catch (error) {
+          console.warn('Session data corrupted, clearing');
+          sessionStorage.removeItem('pt_session');
+        }
+      }
+    } else {
+      isRemembered = true;
+    }
     
     if (savedSession && savedSession.isAuthenticated) {
       // Session validation
       if (validateSession(savedSession)) {
         setIsAuthenticated(true);
         setCurrentPT(savedSession.ptData);
-        secureLog('Session restored successfully');
+        secureLog(`Session restored successfully (${isRemembered ? 'remembered' : 'session only'})`);
       } else {
         secureLog('Session expired, clearing data');
         localStorage.removeItem('pt_session');
+        sessionStorage.removeItem('pt_session');
       }
     }
     setLoading(false);
   }, []);
 
   // GÜVENLİ LOGIN - DevTools'da şifre görünmez
-  const login = async (kullaniciAdi, sifre) => {
+  const login = async (kullaniciAdi, sifre, rememberMe = false) => {
     try {
       // Rate limiting simulation
       await new Promise(resolve => setTimeout(resolve, 500));
@@ -68,9 +86,16 @@ export const AuthProvider = ({ children }) => {
         
         setIsAuthenticated(true);
         setCurrentPT(mockPTData);
-        saveToLocalStorage('pt_session', sessionData);
         
-        secureLog('Login successful');
+        // Beni hatırla seçeneğine göre storage seç
+        if (rememberMe) {
+          saveToLocalStorage('pt_session', sessionData);
+          secureLog('Login successful - session saved permanently');
+        } else {
+          sessionStorage.setItem('pt_session', JSON.stringify(sessionData));
+          secureLog('Login successful - session saved for browser session only');
+        }
+        
         return { success: true };
       } else {
         secureLog('Login failed - invalid credentials');
@@ -93,6 +118,7 @@ export const AuthProvider = ({ children }) => {
     setIsAuthenticated(false);
     setCurrentPT(null);
     localStorage.removeItem('pt_session');
+    sessionStorage.removeItem('pt_session');
     secureLog('User logged out successfully');
   };
 
