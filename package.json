@@ -3,6 +3,7 @@
   "version": "1.4.2",
   "description": "Personal Trainer Üye Kayıt Sistemi - Ultra Güvenli DevTools Korumalı",
   "main": "index.js",
+  "type": "commonjs",
   "engines": {
     "node": "18.x"
   },
