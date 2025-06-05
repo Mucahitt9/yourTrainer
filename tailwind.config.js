@@ -3,6 +3,43 @@ module.exports = {
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
+    "./src/**/*.{html,js,jsx,ts,tsx}",
+    "./src/components/**/*.{js,jsx}",
+    "./src/pages/**/*.{js,jsx}",
+    "./src/utils/**/*.{js,jsx}",
+    "./src/**/*"
+  ],
+  safelist: [
+    // Animasyon sınıfları
+    'animate-fade-in',
+    'animate-slide-up', 
+    'animate-stagger-1',
+    'animate-stagger-2',
+    'animate-stagger-3',
+    'animate-stagger-4',
+    'hover-lift',
+    'hover-scale',
+    'hover-glow',
+    'card-animate',
+    // Button sınıfları
+    'btn-primary',
+    'btn-secondary', 
+    'btn-danger',
+    'btn-success',
+    'btn-whatsapp',
+    'btn-fab',
+    // Primary renkler
+    {
+      pattern: /^(bg|text|border|ring)-primary-(50|100|200|300|400|500|600|700|800|900)$/,
+    },
+    // Hover states
+    {
+      pattern: /^hover:(bg|text|border|ring)-primary-(50|100|200|300|400|500|600|700|800|900)$/,
+    },
+    // Focus states  
+    {
+      pattern: /^focus:(bg|text|border|ring)-primary-(50|100|200|300|400|500|600|700|800|900)$/,
+    }
   ],
   theme: {
     extend: {
