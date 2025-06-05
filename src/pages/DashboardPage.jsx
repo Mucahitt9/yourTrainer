@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../utils/AuthContext';
-import { getFromLocalStorage } from '../utils/helpers';
+import { db } from '../utils/supabase';
 import { 
   Users, 
   UserPlus, 
@@ -28,50 +28,72 @@ const DashboardPage = () => {
     averageSessionPrice: 0,
     upcomingEnds: []
   });
+  const [loading, setLoading] = useState(true);
 
-  // Memoized hesaplamalar
-  const musteriler = useMemo(() => {
-    return getFromLocalStorage('musteriler', []);
-  }, []);
+  // Supabase'den müşteri verilerini çek
+  const loadClientData = useCallback(async () => {
+    if (!currentPT?.id) return;
 
-  const calculatedStats = useMemo(() => {
+    try {
+      setLoading(true);
+      
+      // Müşteri verilerini çek
+      const { data: clients, error } = await db.clients.getAll(currentPT.id);
+      
+      if (error) {
+        console.error('Error loading clients:', error);
+        return;
+      }
+
+      if (clients) {
+        calculateStats(clients);
+      }
+    } catch (error) {
+      console.error('Error in loadClientData:', error);
+    } finally {
+      setLoading(false);
+    }
+  }, [currentPT?.id]);
+
+  // İstatistikleri hesapla
+  const calculateStats = (clients) => {
     const now = new Date();
     const thisMonth = new Date(now.getFullYear(), now.getMonth(), 1);
     
     // Temel istatistikler
-    const totalClients = musteriler.length;
-    const activeClients = musteriler.filter(m => {
-      if (!m.tahmini_bitis_tarihi) return true;
-      return new Date(m.tahmini_bitis_tarihi) > now;
+    const totalClients = clients.length;
+    const activeClients = clients.filter(client => {
+      if (!client.tahmini_bitis_tarihi) return true;
+      return new Date(client.tahmini_bitis_tarihi) > now;
     }).length;
     const completedClients = totalClients - activeClients;
     
     // Gelir hesaplamaları
-    const totalRevenue = musteriler.reduce((sum, m) => sum + (m.toplam_ucret || 0), 0);
-    const thisMonthClients = musteriler.filter(m => 
-      new Date(m.kayit_tarihi) >= thisMonth
+    const totalRevenue = clients.reduce((sum, client) => sum + (client.toplam_ucret || 0), 0);
+    const thisMonthClients = clients.filter(client => 
+      new Date(client.created_at) >= thisMonth
     );
-    const thisMonthRevenue = thisMonthClients.reduce((sum, m) => sum + (m.toplam_ucret || 0), 0);
+    const thisMonthRevenue = thisMonthClients.reduce((sum, client) => sum + (client.toplam_ucret || 0), 0);
     
     // Ortalama ders fiyatı
     const averageSessionPrice = totalClients > 0 
-      ? musteriler.reduce((sum, m) => sum + (m.ders_basina_ucret || 0), 0) / totalClients 
+      ? clients.reduce((sum, client) => sum + (client.ders_basina_ucret || 0), 0) / totalClients 
       : 0;
     
     // Yaklaşan bitiş tarihleri (30 gün içinde)
     const thirtyDaysLater = new Date();
     thirtyDaysLater.setDate(now.getDate() + 30);
     
-    const upcomingEnds = musteriler
-      .filter(m => {
-        if (!m.tahmini_bitis_tarihi) return false;
-        const endDate = new Date(m.tahmini_bitis_tarihi);
+    const upcomingEnds = clients
+      .filter(client => {
+        if (!client.tahmini_bitis_tarihi) return false;
+        const endDate = new Date(client.tahmini_bitis_tarihi);
         return endDate > now && endDate <= thirtyDaysLater;
       })
       .sort((a, b) => new Date(a.tahmini_bitis_tarihi) - new Date(b.tahmini_bitis_tarihi))
       .slice(0, 5);
 
-    return {
+    setStats({
       totalClients,
       activeClients,
       completedClients,
@@ -79,12 +101,13 @@ const DashboardPage = () => {
       thisMonthRevenue,
       averageSessionPrice,
       upcomingEnds
-    };
-  }, [musteriler]);
+    });
+  };
 
+  // Component mount olduğunda veri yükle
   useEffect(() => {
-    setStats(calculatedStats);
-  }, [calculatedStats]);
+    loadClientData();
+  }, [loadClientData]);
 
   const quickActions = [
     {
@@ -140,6 +163,20 @@ const DashboardPage = () => {
     return diffDays;
   }, []);
 
+  // Loading state
+  if (loading) {
+    return (
+      <div className="max-w-7xl mx-auto space-y-8">
+        <div className="bg-gray-200 animate-pulse rounded-2xl h-48"></div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {[1, 2, 3, 4].map(i => (
+            <div key={i} className="bg-gray-200 animate-pulse rounded-xl h-24"></div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-7xl mx-auto space-y-8">
       {/* Welcome Header */}
@@ -150,7 +187,10 @@ const DashboardPage = () => {
               Hoş geldin, {currentPT?.ad} {currentPT?.soyad}! 👋
             </h1>
             <p className="text-primary-100 text-lg">
-              Bugün nasıl gidiyor? İşte senin PT istatistiklerin.
+              {stats.totalClients > 0 
+                ? `${stats.totalClients} müşterinle harika gidiyorsun! İşte PT istatistiklerin.`
+                : 'İlk müşterini eklemeye hazır mısın? Hemen başlayalım!'
+              }
             </p>
           </div>
           <div className="hidden lg:block">
@@ -300,16 +340,16 @@ const DashboardPage = () => {
             </h3>
             {stats.upcomingEnds.length > 0 ? (
               <div className="space-y-3">
-                {stats.upcomingEnds.map((musteri, index) => {
-                  const daysLeft = getDaysUntil(musteri.tahmini_bitis_tarihi);
+                {stats.upcomingEnds.map((client, index) => {
+                  const daysLeft = getDaysUntil(client.tahmini_bitis_tarihi);
                   return (
                     <div key={index} className="flex items-center justify-between p-3 bg-orange-50 rounded-lg">
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-gray-900 truncate">
-                          {musteri.ad} {musteri.soyad}
+                          {client.ad} {client.soyad}
                         </p>
                         <p className="text-xs text-gray-500">
-                          {formatDate(musteri.tahmini_bitis_tarihi)}
+                          {formatDate(client.tahmini_bitis_tarihi)}
                         </p>
                       </div>
                       <div className="flex-shrink-0">
@@ -329,7 +369,10 @@ const DashboardPage = () => {
               </div>
             ) : (
               <p className="text-sm text-gray-500 text-center py-4">
-                Yaklaşan bitiş tarihi yok 🎉
+                {stats.totalClients === 0 ? 
+                  'Henüz müşteri yok. İlk müşterini ekle! 🚀' : 
+                  'Yaklaşan bitiş tarihi yok 🎉'
+                }
               </p>
             )}
           </div>
@@ -338,11 +381,19 @@ const DashboardPage = () => {
           <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-6 text-white">
             <div className="flex items-center space-x-3 mb-3">
               <Star className="h-6 w-6 text-green-200" />
-              <h3 className="text-lg font-semibold">Harika Gidiyorsun! 💪</h3>
+              <h3 className="text-lg font-semibold">
+                {stats.totalClients > 0 ? 'Harika Gidiyorsun! 💪' : 'Hadi Başlayalım! 🚀'}
+              </h3>
             </div>
             <p className="text-green-100 text-sm leading-relaxed">
-              {stats.activeClients} aktif müşterin var ve {formatCurrency(stats.totalRevenue)} toplam gelir elde etmişsin. 
-              Devam et! 🚀
+              {stats.totalClients > 0 ? (
+                <>
+                  {stats.activeClients} aktif müşterin var ve {formatCurrency(stats.totalRevenue)} toplam gelir elde etmişsin. 
+                  Devam et! 🚀
+                </>
+              ) : (
+                'İlk müşterini ekleyerek YourTrainer yolculuğuna başla. Başarı seni bekliyor! 🌟'
+              )}
             </p>
           </div>
         </div>

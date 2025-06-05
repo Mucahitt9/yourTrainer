@@ -6,6 +6,7 @@ import ErrorBoundary from './components/error/ErrorBoundary';
 import PWAInstallPrompt from './components/PWAInstallPrompt';
 import NetworkStatusIndicator from './components/NetworkStatusIndicator';
 import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
 import Layout from './components/Layout';
 import LoadingSpinner from './components/LoadingSpinner';
 
@@ -60,6 +61,14 @@ const AppContent = () => {
           path="/login" 
           element={
             isAuthenticated ? <Navigate to="/dashboard" replace /> : <LoginPage />
+          } 
+        />
+        
+        {/* Register sayfası */}
+        <Route 
+          path="/register" 
+          element={
+            isAuthenticated ? <Navigate to="/dashboard" replace /> : <RegisterPage />
           } 
         />
         

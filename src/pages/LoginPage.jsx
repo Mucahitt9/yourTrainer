@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../utils/AuthContext';
-import { Dumbbell, Eye, EyeOff, User, Lock, Info } from 'lucide-react';
+import { Dumbbell, Eye, EyeOff, Mail, Lock, Info } from 'lucide-react';
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
-    kullaniciAdi: '',
-    sifre: ''
+    email: '',
+    password: ''
   });
   const [rememberMe, setRememberMe] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -16,6 +16,18 @@ const LoginPage = () => {
 
   const { login } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  
+  // Register'dan gelen success message'ı kontrol et
+  useEffect(() => {
+    if (location.state?.message) {
+      setError(''); // Clear any existing errors
+      // Register'dan gelen email'i form'a doldur
+      if (location.state?.email) {
+        setFormData(prev => ({ ...prev, email: location.state.email }));
+      }
+    }
+  }, [location.state]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -33,7 +45,7 @@ const LoginPage = () => {
     setError('');
 
     try {
-      const result = await login(formData.kullaniciAdi, formData.sifre, rememberMe);
+      const result = await login(formData.email, formData.password, rememberMe);
       
       if (result.success) {
         navigate('/dashboard');
@@ -47,8 +59,8 @@ const LoginPage = () => {
     }
   };
 
-  // Demo bilgilerini sadece development'ta göster
-  const isDevelopment = import.meta.env.DEV;
+  // Demo bilgilerini sadece development'ta göster (şu an kapalı)
+  const isDevelopment = false; // import.meta.env.DEV;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-50 to-gray-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -69,33 +81,33 @@ const LoginPage = () => {
         {/* Login Formu */}
         <div className="bg-white py-8 px-6 shadow-xl rounded-xl border border-gray-200">
           <form className="space-y-6" onSubmit={handleSubmit}>
-            {/* Kullanıcı Adı */}
+            {/* Email */}
             <div>
-              <label htmlFor="kullaniciAdi" className="block text-sm font-medium text-gray-700 mb-2">
-                Kullanıcı Adı
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                Email Adresi
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <User className="h-5 w-5 text-gray-400" />
+                  <Mail className="h-5 w-5 text-gray-400" />
                 </div>
                 <input
-                  id="kullaniciAdi"
-                  name="kullaniciAdi"
-                  type="text"
+                  id="email"
+                  name="email"
+                  type="email"
                   required
-                  value={formData.kullaniciAdi}
+                  value={formData.email}
                   onChange={handleChange}
                   className="input-field pl-10"
-                  placeholder="Kullanıcı adınızı girin"
+                  placeholder="email@example.com"
                   disabled={loading}
-                  autoComplete="username"
+                  autoComplete="email"
                 />
               </div>
             </div>
 
             {/* Şifre */}
             <div>
-              <label htmlFor="sifre" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
                 Şifre
               </label>
               <div className="relative">
@@ -103,11 +115,11 @@ const LoginPage = () => {
                   <Lock className="h-5 w-5 text-gray-400" />
                 </div>
                 <input
-                  id="sifre"
-                  name="sifre"
+                  id="password"
+                  name="password"
                   type={showPassword ? 'text' : 'password'}
                   required
-                  value={formData.sifre}
+                  value={formData.password}
                   onChange={handleChange}
                   className="input-field pl-10 pr-10"
                   placeholder="Şifrenizi girin"
@@ -153,6 +165,13 @@ const LoginPage = () => {
               </div>
             </div>
 
+            {/* Success Message (Register'dan gelirse) */}
+            {location.state?.message && (
+              <div className="bg-green-50 border border-green-200 rounded-lg p-3">
+                <p className="text-sm text-green-600">{location.state.message}</p>
+              </div>
+            )}
+
             {/* Error Message */}
             {error && (
               <div className="bg-red-50 border border-red-200 rounded-lg p-3">
@@ -175,6 +194,18 @@ const LoginPage = () => {
                 'Giriş Yap'
               )}
             </button>
+            {/* Register Link */}
+            <div className="text-center mt-4">
+              <p className="text-sm text-gray-600">
+                Henüz hesabınız yok mu?{' '}
+                <Link 
+                  to="/register" 
+                  className="font-medium text-primary-600 hover:text-primary-500 transition-colors duration-200"
+                >
+                  Hesap Oluşturun
+                </Link>
+              </p>
+            </div>
           </form>
 
           {/* Demo Bilgileri - Sadece Development */}
@@ -192,12 +223,20 @@ const LoginPage = () => {
               {showDemoInfo && (
                 <div className="mt-3 p-4 bg-blue-50 rounded-lg border border-blue-200">
                   <h3 className="text-sm font-medium text-blue-800 mb-2">Development Demo:</h3>
-                  <div className="text-sm text-blue-700 space-y-1">
-                    <p><strong>Kullanıcı Adı:</strong>mucahit.tastan</p>
-                    <p><strong>Şifre:</strong>müco123</p>
-                    <p className="text-xs text-blue-600 mt-2">
-                      * Bu bilgiler sadece geliştirme ortamında görünür
-                    </p>
+                  <div className="text-sm text-blue-700 space-y-3">
+                    <div className="p-2 bg-white rounded border">
+                      <p><strong>Demo Hesap (Supabase):</strong></p>
+                      <p><strong>Email:</strong> demo@yourtrainer.com</p>
+                      <p><strong>Şifre:</strong> demo123456</p>
+                      <p className="text-xs text-blue-600 mt-1">
+                        * Bu hesapla test edebilirsiniz
+                      </p>
+                    </div>
+                    <div className="p-2 bg-gray-50 rounded border border-gray-200">
+                      <p className="text-xs text-gray-600">
+                        <strong>Not:</strong> Gerçek hesap oluşturmak için Supabase'i yapılandırın ve demo PT hesapları ekleyin.
+                      </p>
+                    </div>
                   </div>
                 </div>
               )}
@@ -209,7 +248,7 @@ const LoginPage = () => {
             <div className="flex items-start gap-2">
               <Lock className="h-4 w-4 text-green-600 mt-0.5 flex-shrink-0" />
               <p className="text-xs text-green-700">
-                Giriş bilgileriniz güvenli şekilde şifrelenerek korunmaktadır.
+                Verileriniz Supabase ile güvenli şekilde şifrelenerek korunmaktadır.
               </p>
             </div>
           </div>
