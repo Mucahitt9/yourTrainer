@@ -28,17 +28,9 @@ module.exports = {
     'btn-success',
     'btn-whatsapp',
     'btn-fab',
-    // Primary renkler
+    // Primary renkler (temel pattern yeterli)
     {
       pattern: /^(bg|text|border|ring)-primary-(50|100|200|300|400|500|600|700|800|900)$/,
-    },
-    // Hover states
-    {
-      pattern: /^hover:(bg|text|border|ring)-primary-(50|100|200|300|400|500|600|700|800|900)$/,
-    },
-    // Focus states  
-    {
-      pattern: /^focus:(bg|text|border|ring)-primary-(50|100|200|300|400|500|600|700|800|900)$/,
     }
   ],
   theme: {

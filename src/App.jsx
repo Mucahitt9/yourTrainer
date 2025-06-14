@@ -18,7 +18,7 @@ const ClientDetailPage = lazy(() => import('./pages/ClientDetailPage'));
 const ClientEditPage = lazy(() => import('./pages/ClientEditPage'));
 const LessonTrackingPage = lazy(() => import('./pages/LessonTrackingPage'));
 const ProfilePage = lazy(() => import('./pages/ProfilePage'));
-const ToastDemoPage = lazy(() => import('./pages/ToastDemoPage'));
+
 
 // Protected Route bileşeni
 const ProtectedRoute = ({ children }) => {
@@ -121,16 +121,7 @@ const AppContent = () => {
           <Route index element={<ProfilePage />} />
         </Route>
         
-        <Route 
-          path="/toast-demo" 
-          element={
-            <ProtectedRoute>
-              <Layout />
-            </ProtectedRoute>
-          }
-        >
-          <Route index element={<ToastDemoPage />} />
-        </Route>
+
         
         {/* 404 - tüm diğer route'lar */}
         <Route path="*" element={<Navigate to="/" replace />} />
