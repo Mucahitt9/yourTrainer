@@ -70,3 +70,14 @@ export const STATUS = {
   COMPLETED: 'completed',
   CANCELLED: 'cancelled'
 };
+
+// Haftalık ders günleri seçenekleri
+export const haftaninGunleri = [
+  { value: "Pazartesi", label: "Pazartesi" },
+  { value: "Salı", label: "Salı" },
+  { value: "Çarşamba", label: "Çarşamba" },
+  { value: "Perşembe", label: "Perşembe" },
+  { value: "Cuma", label: "Cuma" },
+  { value: "Cumartesi", label: "Cumartesi" },
+  { value: "Pazar", label: "Pazar" }
+];

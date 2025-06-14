@@ -4,7 +4,7 @@ import { ArrowLeft, Save, X, Calendar, DollarSign, Activity, User } from 'lucide
 import { getFromLocalStorage, saveToLocalStorage, validateMusteriForm, formatDate, hesaplaTahminiBitisTarihi, hesaplaToplamUcret } from '../utils/helpers';
 import { useToast } from '../utils/ToastContext';
 import SuccessModal from '../components/SuccessModal';
-import { haftaninGunleri } from '../data/mockData';
+import { haftaninGunleri } from '../assets/constants/app';
 
 const ClientEditPage = () => {
   const { id } = useParams();
